@@ -1,4 +1,4 @@
-/**
+/***
  * This is the main server script that provides the API endpoints
  * The script uses the database helper in /src
  * The endpoints retrieve, update, and return data to the page handlebars files
