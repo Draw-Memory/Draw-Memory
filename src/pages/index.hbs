@@ -93,10 +93,8 @@
     <div class="content" role="main">
 
       <!-- This is the start of content for our page -->
-      <h1>Hello SQLite!</h1>
-      <p>
-        A poll built with Chart.js and powered by Node.js with a {{seo.db}} database.
-      </p>
+      <h3>Draw Memory</h3>
+
       {{#if error}}
       <p class="error">
         {{error}}
@@ -128,9 +126,7 @@
         Poll
       </h2>
       <div class="poll-form">
-        <p>
-          What do you like coding most?
-        </p>
+        <p>Qual o desenho base?</p>
         <!-- Call the server post endpoint when the user submits an option in the poll -->
         <form method="post" action="/">
           <!-- The server script returns the list of language options to offer in the poll -->
@@ -149,16 +145,6 @@
       {{/if}}
       {{/if}}
 
-      <!-- Instructions on using this project -->
-      <div class="instructions">
-        <h2>
-          Using this project
-        </h2>
-        <p>
-          This is the Glitch <strong>Hello {{seo.db}}</strong> project. You can use it to build your own app. Check out README.md in the editor for more info and next steps you can take!
-        </p>
-      </div>
-
     </div>
   </div>
   <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
@@ -167,11 +153,11 @@
     <a href="/">Home</a>
     <span class="divider">|</span>
     <a href="/logs">Admin</a>
-    <a class="btn--remix" target="_top" href="https://glitch.com/edit/#!/remix/glitch-hello-sqlite">
+    {{!-- <a class="btn--remix" target="_top" href="https://glitch.com/edit/#!/remix/glitch-hello-sqlite">
       <img src="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FLogo_Color.svg?v=1618199565140"
         alt="" />
       Remix on Glitch
-    </a>
+    </a> --}}
   </footer>
 </body>
 
