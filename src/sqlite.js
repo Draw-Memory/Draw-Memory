@@ -44,6 +44,11 @@ dbWrapper
         await db.run(
           "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, choice TEXT, time STRING)"
         );
+
+        // Desenhos can start empty - we'll insert a new record whenever the user guarda
+        await db.run(
+          "CREATE TABLE Desenhos (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, time STRING, memory TEXT NOT NULL)"
+        );
       } else {
         // We have a database already - write Choices records to log for info
         console.log(await db.all("SELECT * from Choices"));
@@ -96,6 +101,17 @@ module.exports = {
         await db.run("INSERT INTO Log (choice, time) VALUES (?, ?)", [
           vote,
           new Date().toISOString()
+        ]);
+
+        // Insert the front-end and the current time into the sql query
+        // convert the array to a string representation
+        paths_string = ','.join(paths)        
+        // insert the string representation of the array into the table
+        //conn.execute(f"INSERT INTO array (data) VALUES ('{array_string}')")        
+        await db.run("INSERT INTO Desenhos (titulo, time, memory) VALUES (?, ?,?)", [
+          vote,
+          new Date().toISOString(),
+          paths_string
         ]);
 
         // Update the number of times the choice has been picked by adding one to it
