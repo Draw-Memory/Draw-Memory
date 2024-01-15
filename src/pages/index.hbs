@@ -23,16 +23,14 @@
   <meta property="og:url" content="{{seo.url}}">
   <meta property="og:description" content="{{seo.description}}">
   <meta property="og:image" content="{{seo.image}}">
-  <meta name="twitter:card" content="summary">
 
   <!-- Import the webpage's stylesheet -->
   <link rel="stylesheet" href="/style.css" />
 
   <!-- Show choice chart on poll submission -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="text/javascript">
-    /*
-    The chart uses chart.js - try tweaking the config!
+  <script type="text/javascript"> 
+    /* The chart uses chart.js - try tweaking the config!
     https://www.chartjs.org/docs/3.0.2/charts/doughnut.html
     
     We pass the choices and picks arrays from the page when the server script returns them
@@ -88,7 +86,7 @@
 
   <!-- Processing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
-  <script>  
+  <script type="text/javascript"> 
    
     var paths = []; // All the paths    
     var painting = false;// Are we painting?    
@@ -199,7 +197,7 @@
       line(this.position.x, this.position.y, other.position.x, other.position.y);
       }
     }
- </script>
+  </script>
 
 </head>
 
@@ -207,7 +205,7 @@
   <div class="wrapper">
     <div class="content" role="main">
 
-      <!-- This is the start of content for our page -->
+      <!-- This is the start of content for page -->
       <h3>Draw Memory</h3>
 
       {{#if error}}
@@ -233,20 +231,23 @@
           </div>
         
         {{else}} 
-        <div class="poll-form">
-            <p>Qual o desenho base?</p>
-            <!-- Call the server post endpoint when the user submits an option in the poll -->
-            <form method="post" action="/">
-              <!-- The server script returns the list of language options to offer in the poll -->
-              {{#each optionNames}}
-                <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
-                <label for="{{this}}">{{this}}</label>
-              {{/each}}
-              <br /><br />
-              <button type="submit">Submit</button>
-            </form>
-            <!-- ADD LINK FROM TODO -->
-        </div>
+          <div class="poll-form">
+              <p>Qual o desenho base?</p>
+              <!-- Call the server post endpoint when the user submits an option in the poll -->
+              <form method="post" action="/">
+                <!-- The server script returns the list of language options to offer in the poll -->
+                {{#each optionNames}}
+                  <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
+                  <label for="{{this}}">{{this}}</label>
+                {{/each}}
+                <br /><br />
+                <button type="submit">Submit</button>
+              </form>
+              <!-- ADD LINK FROM TODO -->
+              <p>
+                <a href="/?results=true">Show results</a>
+              </p>
+          </div>
         {{/if}}
 
       {{/if}}
@@ -256,7 +257,6 @@
 
   <div class="wrapperDraw">
     <div class="contentDraw" role="mainDraw">
-      
     </div>  
   </div>
 

@@ -1,5 +1,5 @@
-/***
- * This is the main server script that provides the API endpoints
+/*** * This is the main server script that provides the API endpoints
+ * 
  * The script uses the database helper in /src
  * The endpoints retrieve, update, and return data to the page handlebars files
  *
@@ -33,7 +33,7 @@ fastify.register(require("@fastify/view"), {
   },
 });
 
-// Load and parse SEO data
+// Load and parse SEO data - SEO (Search Engine Optimization)
 const seo = require("./src/seo.json");
 if (seo.url === "glitch-default") {
   seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
@@ -43,8 +43,7 @@ if (seo.url === "glitch-default") {
 const data = require("./src/data.json");
 const db = require("./src/" + data.database);
 
-/**
- * Home route for the app
+/** * Home route for the app
  *
  * Return the poll options from the database helper script
  * The home route may be called on remix in which case the db needs setup
@@ -52,8 +51,7 @@ const db = require("./src/" + data.database);
  * Client can request raw data using a query parameter
  */
 fastify.get("/", async (request, reply) => {
-  /* 
-  Params is the data we pass to the client
+  /* Params is the data we pass to the client
   - SEO values for front-end UI but not for raw data
   */
   let params = request.query.raw ? {} : { seo: seo };
@@ -79,8 +77,7 @@ fastify.get("/", async (request, reply) => {
     : reply.view("/src/pages/index.hbs", params);
 });
 
-/**
- * Post route to process user vote
+/** * Post route to process user vote
  *
  * Retrieve vote from body data
  * Send vote to database helper

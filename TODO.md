@@ -13,8 +13,6 @@ See the `reset` endpoint in `server.js` to learn how this works.
 
 ## Keep going! 🚀
 
-Your new site is all yours so it doesn't matter if you break it! Try making an edit.
-
 Follow the steps to allow the user to view the results without first submitting a vote:
 
 The homepage shows votes cast so far when the user completes the poll, but you can allow them to see the chart straight away.
