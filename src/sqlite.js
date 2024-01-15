@@ -1,5 +1,4 @@
-/**
- * Module handles database management
+/** * Module handles database management
  *
  * Server API calls the methods in here to query and update the SQLite database
  */
@@ -14,8 +13,7 @@ const sqlite3 = require("sqlite3").verbose();
 const dbWrapper = require("sqlite");
 let db;
 
-/* 
-We're using the sqlite wrapper so that we can make async / await connections
+/* sqlite wrapper so that we can make async / await connections
 - https://www.npmjs.com/package/sqlite
 */
 dbWrapper
@@ -37,7 +35,7 @@ dbWrapper
 
         // Add default choices to table
         await db.run(
-          "INSERT INTO Choices (language, picks) VALUES ('HTML', 0), ('JavaScript', 0), ('CSS', 0)"
+          "INSERT INTO Choices (language, picks) VALUES ('Novo', 0), ('Último', 0), ('Aleatório', 0)"
         );
 
         // Log can start empty - we'll insert a new record whenever the user chooses a poll option
@@ -63,9 +61,23 @@ dbWrapper
 
 // Our server script will call these methods to connect to the db
 module.exports = {
+
+  /** * Get the Desenhos in the database
+   *
+   * Return everything in the Desenhos table
+   * Throw an error in case of db connection issues
+   */
+  getDesenhos: async () => {
+    // We use a try catch block in case of db errors
+    try {
+      return await db.all("SELECT * from Desenhos");
+    } catch (dbError) {
+      // Database connection error
+      console.error(dbError);
+    }
+  }, //getDesenhos  
   
-  /**
-   * Get the options in the database
+  /** * Get the options in the database
    *
    * Return everything in the Choices table
    * Throw an error in case of db connection issues
@@ -78,10 +90,9 @@ module.exports = {
       // Database connection error
       console.error(dbError);
     }
-  },
+  }, //getOptions
 
-  /**
-   * Process a user vote
+  /** * Process a user vote
    *
    * Receive the user vote string from server
    * Add a log entry
@@ -126,13 +137,9 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  },
+  }, //processVote
 
-  /**
-   * Get logs
-   *
-   * Return choice and time fields from all records in the Log table
-   */
+  /** Get logs: Return choice and time fields from all records in the Log table */
   getLogs: async () => {
     // Return most recent 20
     try {
@@ -141,26 +148,29 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  },
+  }, //getLogs
 
-  /**
-   * Clear logs and reset votes
+  /** * Clear logs, reset votes e clear Desenhos
    *
-   * Destroy everything in Log table
+   * Destroy everything in Log table e Desenhos
    * Reset votes in Choices table to zero
    */
   clearHistory: async () => {
     try {
       // Delete the logs
       await db.run("DELETE from Log");
-
+      
       // Reset the vote numbers
       await db.run("UPDATE Choices SET picks = 0");
+      
+      // Delete the logs
+      await db.run("DELETE from Desenhos");
 
       // Return empty array
       return [];
     } catch (dbError) {
       console.error(dbError);
     }
-  }
-};
+  } //clearHistory
+
+}; //module.exports

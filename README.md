@@ -22,7 +22,7 @@ To get best use out of this project you'll ideally be familiar with JavaScript a
 
 ← `server.js`: The Node.js server script for your new site. The JavaScript defines the endpoints in the site API. The API processes requests, connects to the database using the `sqlite` script in `src`, and sends info back to the client (the web pages that make up the app user interface, built using the Handlebars templates in `src/pages`).
 
-← `/src/sqlite.js`: The database script handles setting up and connecting to the SQLite database. The `server.js` API endpoints call the functions in the database script to manage the data.
+← `/src/`: The database script handles setting up and connecting to the SQLite database. The `server.js` API endpoints call the functions in the database script to manage the data.
 
 ← `/src/data.json`: The data config file includes the database manager script–`server.js` reads the `database` property to import the correct script.
 
