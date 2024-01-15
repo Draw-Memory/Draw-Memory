@@ -128,8 +128,7 @@ fastify.get("/logs", async (request, reply) => {
     : reply.view("/src/pages/admin.hbs", params);
 });
 
-/**
- * Admin endpoint to empty all logs
+/** * Admin endpoint to empty all logs
  *
  * Requires authorization (see setup instructions in README)
  * If auth fails, return a 401 and the log list
@@ -138,8 +137,7 @@ fastify.get("/logs", async (request, reply) => {
 fastify.post("/reset", async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
 
-  /* 
-  Authenticate the user request by checking against the env key variable
+  /* Authenticate the user request by checking against the env key variable
   - make sure we have a key in the env and body, and that they match
   */
   if (
@@ -148,10 +146,10 @@ fastify.post("/reset", async (request, reply) => {
     !process.env.ADMIN_KEY ||
     request.body.key !== process.env.ADMIN_KEY
   ) {
-    console.error("Auth fail");
+    console.error("Não autorizado");
 
     // Auth failed, return the log data plus a failed flag
-    params.failed = "You entered invalid credentials!";
+    params.failed = "As credentiais não são validas (Sabes cartelhano?)";
 
     // Get the log list
     params.optionHistory = await db.getLogs();
@@ -169,7 +167,7 @@ fastify.post("/reset", async (request, reply) => {
   return request.query.raw
     ? reply.status(status).send(params)
     : reply.status(status).view("/src/pages/admin.hbs", params);
-});
+}); // fastify.post("/reset", async (request, reply)
 
 // Run the server and report out to the logs
 fastify.listen(
@@ -179,6 +177,6 @@ fastify.listen(
       console.error(err);
       process.exit(1);
     }
-    console.log(`Your app is listening on ${address}`);
+    console.log(`App is listening on ${address}`);
   }
-);
+); //fastify.listen

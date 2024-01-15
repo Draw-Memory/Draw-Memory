@@ -1,5 +1,5 @@
 {
   "database": "sqlite.js",
-  "errorMessage": "Whoops! Error connecting to the database–please try again!",
-  "setupMessage": "🚧 Whoops! Looks like the database isn't setup yet! 🚧"
+  "errorMessage": "Oops! Erro de ligação à Vase de Dados (Tenta de novo)!",
+  "setupMessage": "🚧 Oops! A Base de dados ainda não existe! 🚧"
 }
