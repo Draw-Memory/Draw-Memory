@@ -1,5 +1,5 @@
 {
-  "glitch-help-instructions": "For a custom domain, change the 'url' parameter from 'glitch-default' to your domain _without_ a traling slash, like 'https://www.example.com'",
+  "glitch-help-instructions": "For a custom do, change the 'url' parameter from 'glitch-default' to your domain _without_ a traling slash, like 'https://www.example.com'",
   "title": "Draw Memory",
   "description": "A simple Node site built with Glitch. Remix it to get your own.",
   "url": "glitch-default",
