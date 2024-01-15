@@ -6,6 +6,13 @@
  * The API returns the front-end UI handlebars pages, or
  * Raw json if the client requests it with a query parameter ?raw=json
  */
+/*** * README: `server.js`: The Node.js server script for your new site. 
+ * The JavaScript defines the endpoints in the site API. 
+ * The API processes requests, 
+ *  ← connects to the database using the `sqlite` script in `src`, and 
+ *  ← sends info back to the client (the web pages that make up the app user interface, 
+ *                                  built using the Handlebars templates in `src/pages`).
+*/
 
 // Utilities we need
 const fs = require("fs");
