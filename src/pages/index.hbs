@@ -152,7 +152,8 @@
 </head>
 
 <body>
-  <div class="wrapper">
+  
+    <div class="wrapper">
     
     <div class="content" role="main">
 
@@ -182,12 +183,18 @@
 
         {{else}} 
           <div class="choice-form">
-
+              <p>Qual o desenho base?</p>
               <!-- Call the server post endpoint when 
                    the user submits an option in the poll -->
 
               <form method="post" action="/">
-
+                <!-- The server script returns the list of language options to offer in the poll -->
+                {{#each optionNames}}
+                  <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
+                  <label for="{{this}}">{{this}}</label>
+                {{/each}}
+                <br /><br />
+                <button type="submit">Selecionar</button>
               </form> <!-- form method="post" action="/" -->
 
               <!-- ADD LINK FROM TODO -->
