@@ -72,19 +72,12 @@ body {
 }
 
 /* Page structure */
-/* .wrapper {
+.wrapper {
   min-height: var(--wrapper-height);
   max-height: var(--wrapper-height);
   display: grid;
   place-items: center;
   margin: 0 1rem;
-} */
-.wrapper {
-  height:     auto;       /* These two lines were the key. */
-  min-height: auto;
-  /*overflow:   hidden;*/ /* Do not use this, it crops in small browsers. */
-  margin:     0px auto;
-  padding:    0px auto;
 }
 
 .content {
@@ -93,13 +86,6 @@ body {
   align-items: left;
   justify-content: left;
   /* max-width: 600px; */
-}
-.forDraw {
-  min-height: var(--wrapper-height);
-  max-height: var(--wrapper-height);
-  display: grid;
-  place-items: center;
-  margin: 0 1rem;
 }
 
 p,
