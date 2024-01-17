@@ -74,6 +74,7 @@ body {
 /* Page structure */
 .wrapper {
   min-height: var(--wrapper-height);
+  max-height: var(--wrapper-height);
   display: grid;
   place-items: center;
   margin: 0 1rem;
@@ -83,7 +84,7 @@ body {
   flex-direction: column;
   align-items: left;
   justify-content: left;
-  max-width: 600px;
+  /* max-width: 600px; */
 }
 
 p,
