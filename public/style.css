@@ -118,8 +118,8 @@ h1 {
 .choice-form,
 .choice-results {
   background-color: #FFF3FC;
-  padding: 0 16px 16px 16px;
-  border-radius: 8px;
+  padding: 0 5px 5px 5px;
+  border-radius: 3px;
 }
 .choice-form button:hover {
   cursor: pointer;
