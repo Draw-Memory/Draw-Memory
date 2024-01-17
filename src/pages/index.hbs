@@ -152,18 +152,60 @@
 </head>
 
 <body>
-
-<div class="wrapper">
+  <div class="wrapper">
     
     <div class="content" role="main">
+
+      <!-- This is the start of content for page -->
+      <title>{{seo.title}}</title>
+
+      {{#if error}}
+        <p class="error">{{error}}</p>
       
+      {{else}}
+      
+      <!-- Server returns a flag when the user has submitted a choice and we show the results -->
+      
+        {{#if results}}
+
+          <h2>Results</h2>
+          <div class="choice-results">
+            <p>Desenhos submetidos (Ver a página de logs em <a href="/logs">Admin</a>):</p>
+            <p> <!-- Pass arrays from the API to the chart script in page head -->
+              <canvas id="myChart"></canvas>
+              <script type="text/javascript">
+                showChart("{{{ optionNames }}}".split(","), "{{{ optionCounts }}}".split(","));
+              </script>
+            </p>
+            <!-- If the user hasn't already made a choice we show the poll -->
+          </div>
+
+        {{else}} 
+          <div class="choice-form">
+
+              <!-- Call the server post endpoint when 
+                   the user submits an option in the poll -->
+
+              <form method="post" action="/">
+
+              </form> <!-- form method="post" action="/" -->
+
+              <!-- ADD LINK FROM TODO -->
+              <!-- send a query parameter to the server script -->
+              <!-- <p> <a href="/?results=true">Selecionar</a> </p> -->
+
+          </div>
+        
+        {{/if}}      
+
+      {{/if}}
+
+    </div>
+  </div>
+
   <div class="forDraw">
     <div class="content" role="mainDraw"> </div>  
-    <div id="canvasForDraw"></div>
-  </div>
-
-  </div>
-
+    <div id="canvasForDraw"></div>                   
   </div>
 
   <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
