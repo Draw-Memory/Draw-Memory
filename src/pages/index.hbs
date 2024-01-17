@@ -164,18 +164,8 @@
       
         {{#if results}}
 
-          <h2>Results</h2>
-          <div class="choice-results">
-            <p>Desenhos submetidos (Ver a página de logs em <a href="/logs">Admin</a>):</p>
-            <p> <!-- Pass arrays from the API to the chart script in page head -->
-              <canvas id="myChart"></canvas>
-              <script type="text/javascript">
-                showChart("{{{ optionNames }}}".split(","), "{{{ optionCounts }}}".split(","));
-              </script>
-            </p>
-            <!-- If the user hasn't already made a choice we show the poll -->
-          </div>
-        
+              <!-- Estava o grafico -->
+
         {{else}} 
           <div class="choice-form">
               <p>Qual o desenho base?</p>
