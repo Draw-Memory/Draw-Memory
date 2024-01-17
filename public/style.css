@@ -83,7 +83,7 @@ body {
   flex-direction: column;
   align-items: left;
   justify-content: left;
-  /* max-width: 600px; */
+  max-width: 600px;
 }
 
 p,
