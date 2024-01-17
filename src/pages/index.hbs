@@ -203,15 +203,14 @@
 
 <body>
   <div class="wrapper">
+    
     <div class="content" role="main">
 
       <!-- This is the start of content for page -->
       <title>{{seo.title}}</title>
 
       {{#if error}}
-        <p class="error">
-          {{error}}
-        </p>
+        <p class="error">{{error}}</p>
       
       {{else}}
       <!-- Server returns a flag when the user has submitted a choice and we show the results -->
@@ -220,8 +219,7 @@
           <h2>Results</h2>
           <div class="poll-results">
             <p>Desenhos submetidos (Ver a página de logs em <a href="/logs">Admin</a>):</p>
-            <p>
-              <!-- Pass arrays from the API to the chart script in page head -->
+            <p> <!-- Pass arrays from the API to the chart script in page head -->
               <canvas id="myChart"></canvas>
               <script type="text/javascript">
                 showChart("{{{ optionNames }}}".split(","), "{{{ optionCounts }}}".split(","));
@@ -233,7 +231,8 @@
         {{else}} 
           <div class="poll-form">
               <p>Qual o desenho base?</p>
-              <!-- Call the server post endpoint when the user submits an option in the poll -->
+              <!-- Call the server post endpoint when 
+                   the user submits an option in the poll -->
               <form method="post" action="/">
                 <!-- The server script returns the list of language options to offer in the poll -->
                 {{#each optionNames}}
@@ -242,7 +241,7 @@
                 {{/each}}
                 <br /><br />
                 <button type="submit">Submit</button>
-              </form>
+              </form> <!-- form method="post" action="/" -->
               <!-- ADD LINK FROM TODO -->
               <!-- send a query parameter to the server script -->
               <p> <a href="/?results=true">Desenhar</a> </p>
@@ -255,8 +254,7 @@
   </div>
 
   <div class="wrapperDraw">
-    <div class="contentDraw" role="mainDraw">
-    </div>  
+    <div class="contentDraw" role="mainDraw"> </div>  
   </div>
 
   <h3>Tela para desenhar</h3>

@@ -24,18 +24,12 @@
     <div class="content" role="main">
 
       <!-- This is the start of content for our page -->
-      <h1>Logs</h1>
+      <h1>Lista dos desenhos submetidos (max 20)</h1>
       {{#if error}}
-      <p class="error">
-        {{error}}
-      </p>
+        <p class="error"> {{error}} </p>
       {{else}}
 
       <!-- The server script returns the logs in an array -->
-      <p>
-        Lista dos desnhos submetidos <a href="/">Home</a> 
-        <em>Most recent records will be shown (max 20).</em>
-      </p>
       <!-- Write out a table row for each entry in the log array showing choice and timestamp -->
       {{#if optionHistory.length}}
           <div>
@@ -54,7 +48,7 @@
             </table>
           </div>
       {{else}}
-      <p class="error">Sem desenhos!</p>
+        <p class="error">Sem desenhos!</p>
       {{/if}}
 
       <!-- The user can clear the logs if they first set up an admin key in the env -->
@@ -78,7 +72,7 @@
         {{/if}}
         <input type="password" id="pass" name="key" required>
         <button type="submit">Clear log history</button>
-      </form>
+      </form> 
       {{/if}}
     </div>
   </div>
