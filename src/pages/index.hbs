@@ -28,61 +28,6 @@
   <link rel="stylesheet" href="/style.css" />
 
   <!-- Show choice chart on poll submission -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="text/javascript"> 
-    /* The chart uses chart.js - try tweaking the config!
-    https://www.chartjs.org/docs/3.0.2/charts/doughnut.html
-    
-    We pass the choices and picks arrays from the page when the server script returns them
-    */
-    function showChart(choices, picks) {
-      
-      // Get the page element to show the chart inside
-      var ctx = document.getElementById('myChart');
-      
-      // Set up the chart colors
-      var colors = ["#05DA84", "#E6E656", "#E5AED6"];
-      var border = "#ffffff";
-      
-      // Make sure we have some votes–if not show an empty chart
-      if(picks.reduce((a, b) => a + b, 0)<1) {
-        picks=["1e-10"]; // use a near zero value so that the doughnut displays
-        choices=["No votes! Reload and vote again."];
-        colors=["#00000000"]; // we'll show an empty doughnut shape
-        border=["#000000"];
-      }
-      
-      // Build the chart in the page element
-      var myLineChart = new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: choices,
-          datasets: [{
-            data: picks,
-            backgroundColor: colors,
-            borderColor: border,
-            fill: true,
-            hoverOffset: 12,
-            cutout: "60%"
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: true,
-              position: "bottom",
-              labels: {
-                padding: 24
-              }
-            }
-          },
-          layout: {
-            padding: 24
-          }
-        }
-      });
-    }
-  </script>
 
   <!-- Processing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
@@ -97,7 +42,7 @@
     
     function setup() {
       canvas = createCanvas(windowWidth, windowHeight);
-      canvas.parent('canvasForHTML');
+      canvas.parent('canvasForDraw');
       current = createVector(0,0);
       previous = createVector(0,0);
     };
@@ -197,6 +142,7 @@
       line(this.position.x, this.position.y, other.position.x, other.position.y);
       }
     }
+
   </script>
 
 </head>
@@ -213,9 +159,11 @@
         <p class="error">{{error}}</p>
       
       {{else}}
+      
       <!-- Server returns a flag when the user has submitted a choice and we show the results -->
       
         {{#if results}}
+
           <h2>Results</h2>
           <div class="choice-results">
             <p>Desenhos submetidos (Ver a página de logs em <a href="/logs">Admin</a>):</p>
@@ -258,7 +206,7 @@
   </div>
 
   <h3>Tela para desenhar</h3>
-  <div id="canvasForHTML"></div>  
+  <div id="canvasForDraw"></div>  
 
   <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
   <footer class="footer">
