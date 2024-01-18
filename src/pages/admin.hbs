@@ -30,21 +30,21 @@
     <div class="content" role="main">
 
       <!-- This is the start of content for our page -->
-      <h1>Lista dos desenhos memorizados</h1>
+      <h1>Administração dos desenhos memorizados</h1>
       {{#if error}}
         <p class="error"> {{error}} </p>
       {{else}}
 
       <!-- The server script returns the logs in an array -->
       <!-- Write out a table row for each entry in the log array showing choice and timestamp -->
-      {{#if optionHistory.length}}
+      {{#if logHistory.length}}
           <div>
             <h2>Lista de desenhos memorizados</h2>
             <table>
               <tr>
                 <th>Timestamp</th>
               </tr>
-              {{#each optionHistory}}
+              {{#each logHistory}}
                 <tr>
                   <td>{{time}}</td>
                 </tr>

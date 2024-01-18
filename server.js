@@ -120,10 +120,10 @@ fastify.get("/logs", async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
 
   // Get the log history from the db
-  params.optionHistory = await db.getLogs();
+  params.logHistory = await db.getLogs();
 
   // Let the user know if there's an error
-  params.error = params.optionHistory ? null : data.errorMessage;
+  params.error = params.logHistory ? null : data.errorMessage;
 
   // Send the log list
   return request.query.raw
@@ -155,13 +155,13 @@ fastify.post("/reset", async (request, reply) => {
     params.failed = "As credentiais não são validas (Sabes cartelhano?)";
 
     // Get the log list
-    params.optionHistory = await db.getLogs();
+    params.logHistory = await db.getLogs();
   } else {
     // We have a valid key and can clear the log
-    params.optionHistory = await db.clearHistory();
+    params.logHistory = await db.clearHistory();
 
     // Check for errors - method would return false value
-    params.error = params.optionHistory ? null : data.errorMessage;
+    params.error = params.logHistory ? null : data.errorMessage;
   }
 
   // Send a 401 if auth failed, 200 otherwise
