@@ -46,12 +46,11 @@ dbWrapper
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
           // "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
-          "CREATE TABLE Desenhos (time STRING)"
-
+          "CREATE TABLE Desenhos (time,path)"
         );
         // Add default choices to table
         await db.run(
-          "INSERT INTO Desenhos (time) VALUES (new Date().toISOString())"
+          "INSERT INTO Desenhos DEFAULT VALUES"
         );
 
       } else {
@@ -166,6 +165,39 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  } //clearHistory
+  }, //clearHistory
+
+// --------------
+
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.post("/gravar", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+
+  // Flag to indicate we want to show the poll results instead of the poll form
+  params.results = true;
+  let options;
+
+  // We have a memory - send to the db helper to process and return results
+  if (request.body.language) {
+    options = await db.processMemory(request.body.language);
+    if (options) {
+      // We send the choices and numbers in parallel arrays
+      params.desenhoTime = options.map((desenho) => desenho.time);
+      params.desenhoPath = options.map((desenho) => desenho.path);
+    }
+  }
+  params.error = options ? null : data.errorMessage;
+
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
 
 }; //module.exports
