@@ -91,7 +91,7 @@ module.exports = {
   getOptions: async () => {
     // We use a try catch block in case of db errors
     try {
-      return await db.all("SELECT time from Desenhos");
+      return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       // Database connection error
       console.error(dbError);
@@ -110,7 +110,7 @@ module.exports = {
     try {
       // Check the vote is valid
       const option = await db.all(
-        "SELECT time from Desenhos WHERE time = ?",
+        "SELECT * from Desenhos",
         vote
       );
       if (option.length > 0) {
@@ -122,7 +122,7 @@ module.exports = {
 
         // Update the number of times the choice has been picked by adding one to it
         await db.run(
-          "UPDATE Desenhos SET path = xxxx WHERE time = ?",
+          "UPDATE Desenhos SET path = null WHERE time = Date().toISOString()",
           vote
         );
       }
