@@ -30,20 +30,25 @@
   <!-- Processing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
 
+  <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
+    <div class="links">
+    <a href="/Gravar">Memorizar</a>
+    <span class="divider">|</span>
+    <a href="/">Home</a>
+    <span class="divider">|</span>
+    <a href="/logs">Admin</a>
+  </div>  
+
 </head>
 
 <body>
 
   <div class="forDraw">
-
     <div class="content" role="mainDraw"> </div>  
-
       <div id="canvasForDraw">
 
-         <script type="text/javascript">
-
-         function desenhar(){
-          
+        <script type="text/javascript">
+               
             var paths = []; // All the paths    
             var painting = false;// Are we painting?    
             var next = 0;// How long until the next circle    
@@ -154,23 +159,12 @@
               }
             }
 
-         }
-          
         </script>
 
-    </div>       
-
+      </div>       
+    </div>  
   </div>
 
-  <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
-  <footer class="footer">
-    <div class="links"></div>
-    <a href="/Gravar">Memorizar</a>
-    <span class="divider">|</span>
-    <a href="/">Home</a>
-    <span class="divider">|</span>
-    <a href="/logs">Admin</a>
-  </footer>
 </body>
 
 </html>
