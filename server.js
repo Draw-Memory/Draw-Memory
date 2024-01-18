@@ -64,7 +64,7 @@ fastify.get("/", async (request, reply) => {
   // Get the available memories from the database
   const options = await db.getDesenhos();
   if (options) {
-    params.time = options.map((time) => Desenhos.time);
+    params.time = options.map( time => time);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
@@ -99,8 +99,8 @@ fastify.post("/", async (request, reply) => {
   if (request.body.language) {
     options = await db.processMemory(request.body.language);
     if (options) {
-      // We send the memories and numbers in parallel arrays
-      params.time = options.map((desenho) => Desenhos.time);
+      // We send the memories and numbers in parallel arrays      
+      params.time = options.map( time => time);
     }
   }
   params.error = options ? null : data.errorMessage;
@@ -195,7 +195,7 @@ fastify.post("/reset", async (request, reply) => {
       options = await db.processMemory(request.body.language);
       if (options) {
         // We send the memories and numbers in parallel arrays
-        params.time = options.map((desenho) => Desenhos.time);
+        params.time = options.map( time => time);
       }
     }
     params.error = options ? null : data.errorMessage;
@@ -214,8 +214,8 @@ fastify.post("/reset", async (request, reply) => {
 
     // Get the available memories from the database
     const options = await db.getDesenhos();
-    if (options) {
-      params.time = options.map((time) => Desenhos.time);
+    if (options) {   
+      params.time = options.map( time => time);
     }
     // Let the user know if there was a db error
     else params.error = data.errorMessage;
