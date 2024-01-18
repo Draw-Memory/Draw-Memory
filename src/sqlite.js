@@ -45,11 +45,13 @@ dbWrapper
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
-          "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
+          // "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
+          "CREATE TABLE Desenhos (time STRING)"
+
         );
         // Add default choices to table
         await db.run(
-          "INSERT INTO Desenhos (time, path) VALUES (new Date().toISOString(), new p[])"
+          "INSERT INTO Desenhos (time) VALUES (new Date().toISOString())"
         );
 
       } else {
