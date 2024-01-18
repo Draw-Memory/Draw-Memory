@@ -45,7 +45,7 @@ dbWrapper
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
-          "CREATE TABLE Desenhos (titulo TEXT, time STRING, memory TEXT NOT NULL)"
+          "CREATE TABLE Desenhos (time STRING, memory TEXT NOT NULL)"
         );
       } else {
         // We have a database already - write Choices records to log for info
@@ -130,10 +130,9 @@ module.exports = {
 
   /** Get logs: Return choice and time fields from all records in the Log table */
   getListaDesenhos: async () => {
-    // Return most recent 20 Desenhos
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT * from Desenhos ORDER BY time DESC LIMIT 20");
+      return await db.all("SELECT * from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -141,10 +140,9 @@ module.exports = {
 
   /** Get logs: Return choice and time fields from all records in the Log table */
   getLogs: async () => {
-    // Return most recent 20
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT * from Log ORDER BY time DESC LIMIT 20");
+      return await db.all("SELECT * from Log ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
