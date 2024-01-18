@@ -99,7 +99,7 @@ module.exports = {
    * Find and update the chosen option
    * Return the updated list of votes
    */
-  processVote: async vote => {
+  processMemory: async vote => {
     // Insert new Log table entry indicating the user choice and timestamp
     try {
       // Check the vote is valid
@@ -126,7 +126,7 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  }, //processVote
+  }, //processMemory
 
   /** Get logs: Return choice and time fields from all records in the Log table */
   getListaDesenhos: async () => {

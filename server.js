@@ -57,7 +57,7 @@ const db = require("./src/" + data.database);
  *
  * Client can request raw data using a query parameter
  */
-fastify.get("/", async (request, reply) => {
+fastify.get("/desenhar", async (request, reply) => {
   /* Params is the data we pass to the client
   - SEO values for front-end UI but not for raw data
   */
@@ -84,13 +84,13 @@ fastify.get("/", async (request, reply) => {
     : reply.view("/src/pages/index.hbs", params);
 });
 
-/** * Post route to process user vote
+/** * Post route to process user memory
  *
- * Retrieve vote from body data
- * Send vote to database helper
- * Return updated list of votes
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
  */
-fastify.post("/", async (request, reply) => {
+fastify.post("/desenhar", async (request, reply) => {
   // We only send seo if the client is requesting the front-end ui
   let params = request.query.raw ? {} : { seo: seo };
 
@@ -98,9 +98,9 @@ fastify.post("/", async (request, reply) => {
   params.results = true;
   let options;
 
-  // We have a vote - send to the db helper to process and return results
+  // We have a memory - send to the db helper to process and return results
   if (request.body.language) {
-    options = await db.processVote(request.body.language);
+    options = await db.processMemory(request.body.language);
     if (options) {
       // We send the choices and numbers in parallel arrays
       params.optionNames = options.map((choice) => choice.language);
@@ -116,7 +116,7 @@ fastify.post("/", async (request, reply) => {
 });
 
 /**
- * Admin endpoint returns log of votes
+ * Admin endpoint returns log of memories
  *
  * Send raw json or the admin handlebars page
  */

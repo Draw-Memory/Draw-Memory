@@ -1,6 +1,6 @@
 # TODO 🚧
 
-The site __Admin__ page allows the user to clear the database of votes–but only if a valid key is provided. This is a simplified example of auth that checks if the user entered key matches the one in the `.env`.
+The site __Admin__ page allows the user to clear the database of memories–but only if a valid key is provided. This is a simplified example of auth that checks if the user entered key matches the one in the `.env`.
 
 ## Setting up your admin key
 
@@ -13,9 +13,9 @@ See the `reset` endpoint in `server.js` to learn how this works.
 
 ## Keep going! 🚀
 
-Follow the steps to allow the user to view the results without first submitting a vote:
+Follow the steps to allow the user to view the results without first submitting a memory:
 
-The homepage shows votes cast so far when the user completes the poll, but you can allow them to see the chart straight away.
+The homepage shows memories cast so far when the user completes the poll, but you can allow them to see the chart straight away.
 
 1. Add a link to `src/pages/index.hbs` after the form, which will send a query parameter to the server script:
 
@@ -34,4 +34,4 @@ params.results = request.query.results;
 
 Click the __Show results__ link to see the results without voting!
 
-_Tip: If you just cleared the log, make sure you vote again so that there are some results to show._ 🙈
+_Tip: If you just cleared the log, make sure you memory again so that there are some results to show._ 🙈
