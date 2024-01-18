@@ -29,27 +29,33 @@ dbWrapper
       // The async / await syntax lets us write the db operations in a way that won't block the app
       if (!exists) {
         // Database doesn't exist yet - create Choices and Log tables
-        await db.run(
-          "CREATE TABLE Choices (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, picks INTEGER)"
-        );
+        // await db.run(
+        //   "CREATE TABLE Choices (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, picks INTEGER)"
+        // );
 
         // Add default choices to table
-        await db.run(
-          "INSERT INTO Choices (language, picks) VALUES ('Novo', 0), ('Último', 0), ('Aleatório', 0)"
-        );
+        // await db.run(
+        //   "INSERT INTO Choices (language, picks) VALUES ('Novo', 0), ('Último', 0), ('Aleatório', 0)"
+        // );
 
         // Log can start empty - we'll insert a new record whenever the user chooses a poll option
-        await db.run(
-          "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING)"
-        );
+        // await db.run(
+        //   "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING)"
+        // );
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
-          "CREATE TABLE Desenhos (time STRING, memory TEXT NOT NULL)"
+          // "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
+          "CREATE TABLE Desenhos (time,path)"
         );
+        // Add default choices to table
+        await db.run(
+          "INSERT INTO Desenhos DEFAULT VALUES"
+        );
+
       } else {
         // We have a database already - write Choices records to log for info
-        console.log(await db.all("SELECT * from Choices"));
+        console.log(await db.all("SELECT time from Desenhos"));
 
         //If you need to remove a table from the database use this syntax
         //db.run("DROP TABLE Logs"); //will fail if the table doesn't exist
@@ -70,7 +76,7 @@ module.exports = {
   getDesenhos: async () => {
     // We use a try catch block in case of db errors
     try {
-      return await db.all("SELECT * from Desenhos");
+      return await db.all("SELECT time from Desenhos");
     } catch (dbError) {
       // Database connection error
       console.error(dbError);
@@ -85,7 +91,7 @@ module.exports = {
   getOptions: async () => {
     // We use a try catch block in case of db errors
     try {
-      return await db.all("SELECT * from Choices");
+      return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       // Database connection error
       console.error(dbError);
@@ -104,45 +110,35 @@ module.exports = {
     try {
       // Check the vote is valid
       const option = await db.all(
-        "SELECT * from Choices WHERE language = ?",
+        "SELECT * from Desenhos",
         vote
       );
       if (option.length > 0) {
         // Build the user data from the front-end and the current time into the sql query
-        await db.run("INSERT INTO Log (time) VALUES (?)", [
+        await db.run("INSERT INTO Desenhos (time,path) VALUES (?)", [
           vote,
           new Date().toISOString()
         ]);
 
         // Update the number of times the choice has been picked by adding one to it
         await db.run(
-          "UPDATE Choices SET picks = picks + 1 WHERE language = ?",
+          "UPDATE Desenhos SET path = null WHERE time = Date().toISOString()",
           vote
         );
       }
 
       // Return the choices so far - page will build these into a chart
-      return await db.all("SELECT * from Choices");
+      return await db.all("SELECT time from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
   }, //processMemory
 
   /** Get logs: Return choice and time fields from all records in the Log table */
-  getListaDesenhos: async () => {
-    try {
-      // Return the array of log entries to admin page
-      return await db.all("SELECT * from Desenhos ORDER BY time DESC");
-    } catch (dbError) {
-      console.error(dbError);
-    }
-  }, //getListaDesenhos
-
-  /** Get logs: Return choice and time fields from all records in the Log table */
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT * from Log ORDER BY time DESC");
+      return await db.all("SELECT time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -156,10 +152,10 @@ module.exports = {
   clearHistory: async () => {
     try {
       // Delete the logs
-      await db.run("DELETE from Log");
+      // await db.run("DELETE from Log");
       
       // Reset the vote numbers
-      await db.run("UPDATE Choices SET picks = 0");
+      // await db.run("UPDATE Choices SET picks = 0");
       
       // Delete the logs
       await db.run("DELETE from Desenhos");
@@ -169,6 +165,39 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  } //clearHistory
+  }, //clearHistory
+
+// --------------
+
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.post("/gravar", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+
+  // Flag to indicate we want to show the poll results instead of the poll form
+  params.results = true;
+  let options;
+
+  // We have a memory - send to the db helper to process and return results
+  if (request.body.language) {
+    options = await db.processMemory(request.body.language);
+    if (options) {
+      // We send the choices and numbers in parallel arrays
+      params.desenhoTime = options.map((desenho) => desenho.time);
+      params.desenhoPath = options.map((desenho) => desenho.path);
+    }
+  }
+  params.error = options ? null : data.errorMessage;
+
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
 
 }; //module.exports
