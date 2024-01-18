@@ -1,4 +1,4 @@
-# Exemplo map
+# Help map
 
 let numbers = [-1, 2, -3, 4, -5];
 let positiveNumbers = numbers.map(num => num > 0 ? num : undefined);
