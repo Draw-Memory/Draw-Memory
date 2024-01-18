@@ -29,19 +29,19 @@ dbWrapper
       // The async / await syntax lets us write the db operations in a way that won't block the app
       if (!exists) {
         // Database doesn't exist yet - create Choices and Log tables
-        await db.run(
-          "CREATE TABLE Choices (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, picks INTEGER)"
-        );
+        // await db.run(
+        //   "CREATE TABLE Choices (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, picks INTEGER)"
+        // );
 
         // Add default choices to table
-        await db.run(
-          "INSERT INTO Choices (language, picks) VALUES ('Novo', 0), ('Último', 0), ('Aleatório', 0)"
-        );
+        // await db.run(
+        //   "INSERT INTO Choices (language, picks) VALUES ('Novo', 0), ('Último', 0), ('Aleatório', 0)"
+        // );
 
         // Log can start empty - we'll insert a new record whenever the user chooses a poll option
-        await db.run(
-          "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING)"
-        );
+        // await db.run(
+        //   "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING)"
+        // );
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
@@ -49,7 +49,7 @@ dbWrapper
         );
       } else {
         // We have a database already - write Choices records to log for info
-        console.log(await db.all("SELECT * from Choices"));
+        console.log(await db.all("SELECT *.time from Desenhos"));
 
         //If you need to remove a table from the database use this syntax
         //db.run("DROP TABLE Logs"); //will fail if the table doesn't exist
@@ -82,15 +82,15 @@ module.exports = {
    * Return everything in the Choices table
    * Throw an error in case of db connection issues
    */
-  getOptions: async () => {
-    // We use a try catch block in case of db errors
-    try {
-      return await db.all("SELECT * from Choices");
-    } catch (dbError) {
-      // Database connection error
-      console.error(dbError);
-    }
-  }, //getOptions
+  // getOptions: async () => {
+  //   // We use a try catch block in case of db errors
+  //   try {
+  //     return await db.all("SELECT * from Choices");
+  //   } catch (dbError) {
+  //     // Database connection error
+  //     console.error(dbError);
+  //   }
+  // }, //getOptions
 
   /** * Process a user vote
    *
@@ -104,25 +104,25 @@ module.exports = {
     try {
       // Check the vote is valid
       const option = await db.all(
-        "SELECT * from Choices WHERE language = ?",
+        "SELECT * from Desenhos WHERE time = ?",
         vote
       );
       if (option.length > 0) {
         // Build the user data from the front-end and the current time into the sql query
-        await db.run("INSERT INTO Log (time) VALUES (?)", [
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
           vote,
           new Date().toISOString()
         ]);
 
         // Update the number of times the choice has been picked by adding one to it
-        await db.run(
-          "UPDATE Choices SET picks = picks + 1 WHERE language = ?",
-          vote
-        );
+        // await db.run(
+        //   "UPDATE Choices SET picks = picks + 1 WHERE language = ?",
+        //   vote
+        // );
       }
 
       // Return the choices so far - page will build these into a chart
-      return await db.all("SELECT * from Choices");
+      return await db.all("SELECT *.time from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -142,7 +142,7 @@ module.exports = {
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT * from Log ORDER BY time DESC");
+      return await db.all("SELECT *.time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -156,10 +156,10 @@ module.exports = {
   clearHistory: async () => {
     try {
       // Delete the logs
-      await db.run("DELETE from Log");
+      // await db.run("DELETE from Log");
       
       // Reset the vote numbers
-      await db.run("UPDATE Choices SET picks = 0");
+      // await db.run("UPDATE Choices SET picks = 0");
       
       // Delete the logs
       await db.run("DELETE from Desenhos");
