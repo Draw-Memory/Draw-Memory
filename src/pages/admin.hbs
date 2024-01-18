@@ -39,7 +39,7 @@
       <!-- Write out a table row for each entry in the log array showing choice and timestamp -->
       {{#if optionHistory.length}}
           <div>
-            <h2>Escolhas de desenhos Base</h2>
+            <h2>Lista de desenhos memorizados</h2>
             <table>
               <tr>
                 <th>Timestamp</th>
@@ -56,16 +56,14 @@
       {{/if}}
 
       <!-- The user can clear the logs if they first set up an admin key in the env -->
-      <form action="/reset" method="post">
-        <h2>Limpar a lista de desenhos disponíveis</h2>
-        <p><em>Introduza a password de Administração:</em></p>
-        
+      <form action="/reset" method="post">        
         <!-- Server returns a failed flag if the submitted key doesn't match -->
         {{#if failed}}
           <p class="error"> {{failed}} </p>
         {{/if}}
+          <p><em>Introduza a password de Administração:</em></p>
           <input type="password" id="pass" name="key" required>
-          <button type="submit">Eliminar lista de desenhos base</button>
+          <button type="submit">Limpar a lista de desenhos memorizados</button>
       </form> 
       {{/if}}
     </div>
