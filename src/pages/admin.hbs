@@ -36,12 +36,10 @@
             <h2>Escolhas de desenhos Base</h2>
             <table>
               <tr>
-                <th>Opção</th>
                 <th>Timestamp</th>
               </tr>
               {{#each optionHistory}}
                 <tr>
-                  <td>{{choice}}</td>
                   <td>{{time}}</td>
                 </tr>
               {{/each}}
@@ -68,10 +66,11 @@
   </div>
   <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
   <footer class="footer">
-    <div class="links"></div>
-    <a href="/">Home</a>
-    <span class="divider">|</span>
-    <a href="/logs">Admin</a>
+    <div class="links">
+      <a href="/">Desenhar de novo</a>
+      <span class="divider">|</span>
+      <a href="/logs">Admin</a>
+    </div>
   </footer>
 </body>
 
