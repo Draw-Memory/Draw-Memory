@@ -221,3 +221,30 @@ fastify.post("/gravar", async (request, reply) => {
     ? reply.send(params)
     : reply.view("/src/pages/index.hbs", params);
 });
+
+fastify.get("/gravar", async (request, reply) => {
+  /* Params is the data we pass to the client
+  - SEO values for front-end UI but not for raw data
+  */
+  let params = request.query.raw ? {} : { seo: seo };
+
+  // Get the available choices from the database
+  const options = await db.getOptions();
+  if (options) {
+    params.desenhoTime = options.map((time) => desenho.time);
+    params.desenhoPath = options.map((path) => desenho.path);
+  }
+  // Let the user know if there was a db error
+  else params.error = data.errorMessage;
+
+  // Check in case the data is empty or not setup yet
+  if (options && params.desenhoTime.length < 1)
+    params.setup = data.setupMessage;
+
+  // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
+
+  // Send the page options or raw JSON data if the client requested it
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
