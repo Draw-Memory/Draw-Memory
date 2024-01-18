@@ -47,6 +47,11 @@ dbWrapper
         await db.run(
           "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
         );
+        // Add default choices to table
+        await db.run(
+          "INSERT INTO Desenhos (time, path) VALUES (new Date().toISOString(), new p[])"
+        );
+
       } else {
         // We have a database already - write Choices records to log for info
         console.log(await db.all("SELECT *.time from Desenhos"));
