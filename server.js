@@ -64,11 +64,10 @@ fastify.get("/", async (request, reply) => {
   */
   let params = request.query.raw ? {} : { seo: seo };
 
-  // Get the available choices from the database
+  // Get the available memories from the database
   const options = await db.getOptions();
   if (options) {
     params.desenhoTime = options.map((time) => desenho.time);
-    params.desenhoPath = options.map((path) => desenho.path);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
@@ -103,7 +102,7 @@ fastify.post("/", async (request, reply) => {
   if (request.body.language) {
     options = await db.processMemory(request.body.language);
     if (options) {
-      // We send the choices and numbers in parallel arrays
+      // We send the memories and numbers in parallel arrays
       params.desenhoTime = options.map((desenho) => desenho.time);
       params.desenhoPath = options.map((desenho) => desenho.path);
     }
@@ -177,6 +176,68 @@ fastify.post("/reset", async (request, reply) => {
     : reply.status(status).view("/src/pages/admin.hbs", params);
 }); // fastify.post("/reset", async (request, reply)
 
+// ---------------------
+// gravar
+// ---------------------
+
+  /** * Post route to process user memory
+   *
+   * Retrieve memory from body data
+   * Send memory to database helper
+   * Return updated list of memories
+   */
+  fastify.post("/gravar", async (request, reply) => {
+    // We only send seo if the client is requesting the front-end ui
+    let params = request.query.raw ? {} : { seo: seo };
+
+    // Flag to indicate we want to show the poll results instead of the poll form
+    params.results = true;
+    let options;
+
+    // We have a memory - send to the db helper to process and return results
+    if (request.body.language) {
+      options = await db.processMemory(request.body.language);
+      if (options) {
+        // We send the memories and numbers in parallel arrays
+        params.desenhoTime = options.map((desenho) => desenho.time);
+      }
+    }
+    params.error = options ? null : data.errorMessage;
+
+    // Return the info to the client
+    return request.query.raw
+      ? reply.send(params)
+      : reply.view("/src/pages/index.hbs", params);
+  });
+
+  fastify.get("/gravar", async (request, reply) => {
+    /* Params is the data we pass to the client
+    - SEO values for front-end UI but not for raw data
+    */
+    let params = request.query.raw ? {} : { seo: seo };
+
+    // Get the available memories from the database
+    const options = await db.getOptions();
+    if (options) {
+      params.desenhoTime = options.map((time) => desenho.time);
+    }
+    // Let the user know if there was a db error
+    else params.error = data.errorMessage;
+
+    // Check in case the data is empty or not setup yet
+    if (options && params.desenhoTime.length < 1)
+      params.setup = data.setupMessage;
+
+    // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
+
+    // Send the page options or raw JSON data if the client requested it
+    return request.query.raw
+      ? reply.send(params)
+      : reply.view("/src/pages/index.hbs", params);
+  });
+
+// ---------------------
+
 // Run the server and report out to the logs
 fastify.listen(
   { port: process.env.PORT, host: "0.0.0.0" },
@@ -188,63 +249,3 @@ fastify.listen(
     console.log(`App is listening on ${address}`);
   }
 ); //fastify.listen
-
-// ---------------------
-
-/** * Post route to process user memory
- *
- * Retrieve memory from body data
- * Send memory to database helper
- * Return updated list of memories
- */
-fastify.post("/gravar", async (request, reply) => {
-  // We only send seo if the client is requesting the front-end ui
-  let params = request.query.raw ? {} : { seo: seo };
-
-  // Flag to indicate we want to show the poll results instead of the poll form
-  params.results = true;
-  let options;
-
-  // We have a memory - send to the db helper to process and return results
-  if (request.body.language) {
-    options = await db.processMemory(request.body.language);
-    if (options) {
-      // We send the choices and numbers in parallel arrays
-      params.desenhoTime = options.map((desenho) => desenho.time);
-      params.desenhoPath = options.map((desenho) => desenho.path);
-    }
-  }
-  params.error = options ? null : data.errorMessage;
-
-  // Return the info to the client
-  return request.query.raw
-    ? reply.send(params)
-    : reply.view("/src/pages/index.hbs", params);
-});
-
-fastify.get("/gravar", async (request, reply) => {
-  /* Params is the data we pass to the client
-  - SEO values for front-end UI but not for raw data
-  */
-  let params = request.query.raw ? {} : { seo: seo };
-
-  // Get the available choices from the database
-  const options = await db.getOptions();
-  if (options) {
-    params.desenhoTime = options.map((time) => desenho.time);
-    params.desenhoPath = options.map((path) => desenho.path);
-  }
-  // Let the user know if there was a db error
-  else params.error = data.errorMessage;
-
-  // Check in case the data is empty or not setup yet
-  if (options && params.desenhoTime.length < 1)
-    params.setup = data.setupMessage;
-
-  // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
-
-  // Send the page options or raw JSON data if the client requested it
-  return request.query.raw
-    ? reply.send(params)
-    : reply.view("/src/pages/index.hbs", params);
-});
