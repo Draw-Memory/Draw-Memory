@@ -57,7 +57,7 @@ const db = require("./src/" + data.database);
  *
  * Client can request raw data using a query parameter
  */
-fastify.get("/desenhar", async (request, reply) => {
+fastify.get("/", async (request, reply) => {
   /* Params is the data we pass to the client
   - SEO values for front-end UI but not for raw data
   */
@@ -90,7 +90,7 @@ fastify.get("/desenhar", async (request, reply) => {
  * Send memory to database helper
  * Return updated list of memories
  */
-fastify.post("/desenhar", async (request, reply) => {
+fastify.post("/", async (request, reply) => {
   // We only send seo if the client is requesting the front-end ui
   let params = request.query.raw ? {} : { seo: seo };
 
