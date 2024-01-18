@@ -10,8 +10,9 @@
  * The JavaScript defines the endpoints in the site API. 
  * The API processes requests, 
  *  ← connects to the database using the `sqlite` script in `src`, and 
- *  ← sends info back to the client (the web pages that make up the app user interface, 
- *                                  built using the Handlebars templates in `src/pages`).
+ *  ← sends info back to the client 
+ *    (the web pages that make up the app user interface, 
+ *     built using the Handlebars templates in `src/pages`).
 */
 
 // Utilities we need
@@ -187,3 +188,36 @@ fastify.listen(
     console.log(`App is listening on ${address}`);
   }
 ); //fastify.listen
+
+// ---------------------
+
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.post("/gravar", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+
+  // Flag to indicate we want to show the poll results instead of the poll form
+  params.results = true;
+  let options;
+
+  // We have a memory - send to the db helper to process and return results
+  if (request.body.language) {
+    options = await db.processMemory(request.body.language);
+    if (options) {
+      // We send the choices and numbers in parallel arrays
+      params.desenhoTime = options.map((desenho) => desenho.time);
+      params.desenhoPath = options.map((desenho) => desenho.path);
+    }
+  }
+  params.error = options ? null : data.errorMessage;
+
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
