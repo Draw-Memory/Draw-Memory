@@ -49,7 +49,7 @@
 
         <script type="text/javascript">
                
-            var paths = []; // All paths    
+            var linhas = []; // All linhas    
             var painting = false;// Are we painting?    
             var next = 0;// How long until the next circle    
             var current;// Where are we now and where were we?
@@ -76,7 +76,7 @@
                 var force = p5.Vector.sub(current, previous);
                 force.mult(0.05);
                 
-                paths[paths.length - 1].add(current, force); // Add new particle      
+                linhas[linhas.length - 1].add(current, force); // Add new particle      
                 next = millis() + random(100); // Schedule next circle
 
                 // Store mouse values
@@ -85,9 +85,9 @@
 
               }
 
-              for( var i = 0; i < paths.length; i++) {// Draw all paths
-                paths[i].update();
-                paths[i].display();
+              for( var i = 0; i < linhas.length; i++) {// Draw all linhas
+                linhas[i].update();
+                linhas[i].display();
               }
             }
             
@@ -96,7 +96,7 @@
               painting = true;
               previous.x = mouseX;
               previous.y = mouseY;
-              paths.push(new Path());
+              linhas.push(new Path());
             }
 
             function mouseReleased() { // Stop
