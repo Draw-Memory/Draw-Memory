@@ -33,17 +33,11 @@ dbWrapper
           // "CREATE TABLE Desenhos"
           "CREATE TABLE Desenhos (time)"
         );
-        // Add default memories to table
-        await db.run(
-          "INSERT INTO Desenhos DEFAULT VALUES"
-        );
 
       } else {
         // We have a database already - write memories records to log for info
         console.log(await db.all("SELECT * from Desenhos"));
 
-        //If you need to remove a table from the database use this syntax
-        //db.run("DROP TABLE Logs"); //will fail if the table doesn't exist
       }
     } catch (dbError) {
       console.error(dbError);
@@ -68,21 +62,6 @@ module.exports = {
     }
   }, //getDesenhos  
   
-  /** * Get the options in the database
-   *
-   * Return everything in the memories table
-   * Throw an error in case of db connection issues
-   */
-  getOptions: async () => {
-    // We use a try catch block in case of db errors
-    try {
-      return await db.all("SELECT * from Desenhos");
-    } catch (dbError) {
-      // Database connection error
-      console.error(dbError);
-    }
-  }, //getOptions
-
   /** * Process a user vote
    *
    * Receive the user vote string from server
@@ -108,7 +87,7 @@ module.exports = {
 
         // Update the number of times the choice has been picked by adding one to it
         await db.run(
-          "UPDATE Desenhos SET path = null WHERE time = Date().toISOString()",
+          "UPDATE Desenhos SET time = Date().toISOString()",
           vote
         );
       }
@@ -136,13 +115,7 @@ module.exports = {
    * Reset votes in memories table to zero
    */
   clearHistory: async () => {
-    try {
-      // Delete the logs
-      // await db.run("DELETE from Log");
-      
-      // Reset the vote numbers
-      // await db.run("UPDATE memories SET picks = 0");
-      
+    try {   
       // Delete the logs
       await db.run("DELETE from Desenhos");
 

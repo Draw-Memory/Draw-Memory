@@ -65,7 +65,7 @@ fastify.get("/", async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
 
   // Get the available memories from the database
-  const options = await db.getOptions();
+  const options = await db.getDesenhos();
   if (options) {
     params.desenhoTime = options.map((time) => desenho.time);
   }
@@ -104,7 +104,6 @@ fastify.post("/", async (request, reply) => {
     if (options) {
       // We send the memories and numbers in parallel arrays
       params.desenhoTime = options.map((desenho) => desenho.time);
-      params.desenhoPath = options.map((desenho) => desenho.path);
     }
   }
   params.error = options ? null : data.errorMessage;
@@ -217,7 +216,7 @@ fastify.post("/reset", async (request, reply) => {
     let params = request.query.raw ? {} : { seo: seo };
 
     // Get the available memories from the database
-    const options = await db.getOptions();
+    const options = await db.getDesenhos();
     if (options) {
       params.desenhoTime = options.map((time) => desenho.time);
     }
