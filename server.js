@@ -67,13 +67,13 @@ fastify.get("/", async (request, reply) => {
   // Get the available memories from the database
   const options = await db.getDesenhos();
   if (options) {
-    params.desenhoTime = options.map((time) => desenho.time);
+    params.time = options.map((time) => desenho.time);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
 
   // Check in case the data is empty or not setup yet
-  if (options && params.desenhoTime.length < 1)
+  if (options && params.time.length < 1)
     params.setup = data.setupMessage;
 
   // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
@@ -103,7 +103,7 @@ fastify.post("/", async (request, reply) => {
     options = await db.processMemory(request.body.language);
     if (options) {
       // We send the memories and numbers in parallel arrays
-      params.desenhoTime = options.map((desenho) => desenho.time);
+      params.time = options.map((desenho) => desenho.time);
     }
   }
   params.error = options ? null : data.errorMessage;
@@ -198,7 +198,7 @@ fastify.post("/reset", async (request, reply) => {
       options = await db.processMemory(request.body.language);
       if (options) {
         // We send the memories and numbers in parallel arrays
-        params.desenhoTime = options.map((desenho) => desenho.time);
+        params.time = options.map((desenho) => desenho.time);
       }
     }
     params.error = options ? null : data.errorMessage;
@@ -218,13 +218,13 @@ fastify.post("/reset", async (request, reply) => {
     // Get the available memories from the database
     const options = await db.getDesenhos();
     if (options) {
-      params.desenhoTime = options.map((time) => desenho.time);
+      params.time = options.map((time) => desenho.time);
     }
     // Let the user know if there was a db error
     else params.error = data.errorMessage;
 
     // Check in case the data is empty or not setup yet
-    if (options && params.desenhoTime.length < 1)
+    if (options && params.time.length < 1)
       params.setup = data.setupMessage;
 
     // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
