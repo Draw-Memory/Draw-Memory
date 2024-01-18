@@ -61,11 +61,13 @@
         {{#if failed}}
           <p class="error"> {{failed}} </p>
         {{/if}}
-          <p><em>Introduza a password de Administração para limpar a lista de desenhos memorizados:</em></p>
-          <input type="password" id="pass" name="key" required>
-          <button type="submit">Limpar a lista de desenhos memorizados</button>
+        <p><em>Introduza a password de Administração para limpar a lista de desenhos memorizados:</em></p>
+        <input type="password" id="pass" name="key" required>
+        <button type="submit">Limpar a lista de desenhos memorizados</button>
       </form> 
-      {{/if}}
+
+      {{/if}} <!-- Not error -->
+      
     </div>
   </div>
 

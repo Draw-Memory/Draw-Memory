@@ -40,7 +40,7 @@ dbWrapper
 
         // Log can start empty - we'll insert a new record whenever the user chooses a poll option
         await db.run(
-          "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, choice TEXT, time STRING)"
+          "CREATE TABLE Log (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING)"
         );
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
@@ -109,7 +109,7 @@ module.exports = {
       );
       if (option.length > 0) {
         // Build the user data from the front-end and the current time into the sql query
-        await db.run("INSERT INTO Log (choice, time) VALUES (?, ?)", [
+        await db.run("INSERT INTO Log (time) VALUES (?)", [
           vote,
           new Date().toISOString()
         ]);
