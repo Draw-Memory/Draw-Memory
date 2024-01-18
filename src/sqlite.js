@@ -28,14 +28,16 @@ dbWrapper
     try {
       // The async / await syntax lets us write the db operations in a way that won't block the app
       if (!exists) {
-        // Desenhos can start empty - we'll insert a new record whenever the user guarda
+        // Desenhos can start empty - 
+        // we'll insert a new record whenever the user guarda
         await db.run(
           // "CREATE TABLE Desenhos"
           "CREATE TABLE Desenhos (time)"
         );
 
       } else {
-        // We have a database already - write memories records to log for info
+        // We have a database already - 
+        // write memories records to log for info
         console.log(await db.all("SELECT * from Desenhos"));
 
       }
@@ -47,59 +49,35 @@ dbWrapper
 // Our server script will call these methods to connect to the db
 module.exports = {
 
-  /** * Get the Desenhos in the database
-   *
-   * Return everything in the Desenhos table
-   * Throw an error in case of db connection issues
-   */
   getDesenhos: async () => {
-    // We use a try catch block in case of db errors
     try {
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
-      // Database connection error
       console.error(dbError);
     }
-  }, //getDesenhos  
+  },
   
-  /** * Process a user vote
-   *
-   * Receive the user vote string from server
-   * Add a log entry
-   * Find and update the chosen option
-   * Return the updated list of votes
-   */
-  processMemory: async vote => {
-    // Insert new Log table entry indicating the user choice and timestamp
+  processMemory: async memorize => {
     try {
-      // Check the vote is valid
       const option = await db.all(
         "SELECT * from Desenhos",
-        vote
+        memorize
       );
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
-          vote,
+          memorize,
           new Date().toISOString()
         ]);
-
-        // Update the number of times the choice has been picked by adding one to it
-        await db.run(
-          "UPDATE Desenhos SET time = Date().toISOString()",
-          vote
-        );
       }
 
-      // Return the memories so far - page will build these into a chart
-      return await db.all("SELECT time from Desenhos");
+      return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
-  }, //processMemory
+  },
 
-  /** Get logs: Return choice and time fields from all records in the Log table */
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
@@ -107,13 +85,8 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  }, //getLogs
+  }, 
 
-  /** * Clear logs, reset votes e clear Desenhos
-   *
-   * Destroy everything in Log table e Desenhos
-   * Reset votes in memories table to zero
-   */
   clearHistory: async () => {
     try {   
       // Delete the logs
@@ -124,8 +97,6 @@ module.exports = {
     } catch (dbError) {
       console.error(dbError);
     }
-  } //clearHistory
+  }
 
-// --------------
-
-}; //module.exports
+};
