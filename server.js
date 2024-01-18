@@ -66,17 +66,17 @@ fastify.get("/", async (request, reply) => {
   // Get the available choices from the database
   const options = await db.getOptions();
   if (options) {
-    params.optionNames = options.map((choice) => choice.language);
-    params.optionCounts = options.map((choice) => choice.picks);
+    params.desenhoTime = options.map((time) => desenho.time);
+    params.desenhoPath = options.map((path) => desenho.path);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
 
   // Check in case the data is empty or not setup yet
-  if (options && params.optionNames.length < 1)
+  if (options && params.desenhoTime.length < 1)
     params.setup = data.setupMessage;
 
-  // ADD PARAMS FROM TODO HERE
+  // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
 
   // Send the page options or raw JSON data if the client requested it
   return request.query.raw
@@ -103,8 +103,8 @@ fastify.post("/", async (request, reply) => {
     options = await db.processMemory(request.body.language);
     if (options) {
       // We send the choices and numbers in parallel arrays
-      params.optionNames = options.map((choice) => choice.language);
-      params.optionCounts = options.map((choice) => choice.picks);
+      params.desenhoTime = options.map((desenho) => desenho.time);
+      params.desenhoPath = options.map((desenho) => desenho.path);
     }
   }
   params.error = options ? null : data.errorMessage;

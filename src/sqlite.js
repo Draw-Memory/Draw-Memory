@@ -45,7 +45,7 @@ dbWrapper
 
         // Desenhos can start empty - we'll insert a new record whenever the user guarda
         await db.run(
-          "CREATE TABLE Desenhos (time STRING, memory TEXT NOT NULL)"
+          "CREATE TABLE Desenhos (time STRING, path TEXT NOT NULL)"
         );
       } else {
         // We have a database already - write Choices records to log for info
@@ -82,15 +82,15 @@ module.exports = {
    * Return everything in the Choices table
    * Throw an error in case of db connection issues
    */
-  // getOptions: async () => {
-  //   // We use a try catch block in case of db errors
-  //   try {
-  //     return await db.all("SELECT * from Choices");
-  //   } catch (dbError) {
-  //     // Database connection error
-  //     console.error(dbError);
-  //   }
-  // }, //getOptions
+  getOptions: async () => {
+    // We use a try catch block in case of db errors
+    try {
+      return await db.all("SELECT *.time from Desenhos");
+    } catch (dbError) {
+      // Database connection error
+      console.error(dbError);
+    }
+  }, //getOptions
 
   /** * Process a user vote
    *
@@ -109,16 +109,16 @@ module.exports = {
       );
       if (option.length > 0) {
         // Build the user data from the front-end and the current time into the sql query
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
+        await db.run("INSERT INTO Desenhos (time,path) VALUES (?)", [
           vote,
           new Date().toISOString()
         ]);
 
         // Update the number of times the choice has been picked by adding one to it
-        // await db.run(
-        //   "UPDATE Choices SET picks = picks + 1 WHERE language = ?",
-        //   vote
-        // );
+        await db.run(
+          "UPDATE Desenhos SET path = xxxx WHERE time = ?",
+          vote
+        );
       }
 
       // Return the choices so far - page will build these into a chart
@@ -127,16 +127,6 @@ module.exports = {
       console.error(dbError);
     }
   }, //processMemory
-
-  /** Get logs: Return choice and time fields from all records in the Log table */
-  getListaDesenhos: async () => {
-    try {
-      // Return the array of log entries to admin page
-      return await db.all("SELECT * from Desenhos ORDER BY time DESC");
-    } catch (dbError) {
-      console.error(dbError);
-    }
-  }, //getListaDesenhos
 
   /** Get logs: Return choice and time fields from all records in the Log table */
   getLogs: async () => {
