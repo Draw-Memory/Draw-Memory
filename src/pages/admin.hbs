@@ -60,13 +60,12 @@
         <!-- Server returns a failed flag if the submitted key doesn't match -->
         {{#if failed}}
           <p class="error"> {{failed}} </p>
-        {{else}}     
+        {{/if}}
           <p><em>Introduza a password de Administração para limpar a lista de desenhos memorizados:</em></p>
           <input type="password" id="pass" name="key" required>
           <button type="submit">Limpar a lista de desenhos memorizados</button>
-        {{/if}}
       </form> 
-      
+      {{/if}}
     </div>
   </div>
 
