@@ -37,10 +37,12 @@
   <div class="forDraw">
 
     <div class="content" role="mainDraw"> </div>  
-    
+
       <div id="canvasForDraw">
 
          <script type="text/javascript">
+
+         function desenhar(){
           
             var paths = []; // All the paths    
             var painting = false;// Are we painting?    
@@ -151,6 +153,8 @@
               line(this.position.x, this.position.y, other.position.x, other.position.y);
               }
             }
+
+         }
           
         </script>
 
