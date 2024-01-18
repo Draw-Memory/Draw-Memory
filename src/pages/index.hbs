@@ -27,307 +27,135 @@
   <!-- Import the webpage's stylesheet -->
   <link rel="stylesheet" href="/style.css" />
 
-  <!-- Show choice chart on poll submission -->
-
   <!-- Processing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
-  <script type="text/javascript"> 
-
-  function desenhar(){
-   
-    var paths = []; // All the paths    
-    var painting = false;// Are we painting?    
-    var next = 0;// How long until the next circle    
-    var current;// Where are we now and where were we?
-    var previous;  
-    var canvas;
-    
-    function setup() {
-      canvas = createCanvas(windowWidth, windowHeight);
-      canvas.parent('canvasForDraw');
-      current = createVector(0,0);
-      previous = createVector(0,0);
-    };
-
-    function draw() {
-      {{!-- background(200);     --}}
-      
-      if (millis() > next && painting) { // If it's time for a new point
-
-        // Grab mouse position      
-        current.x = mouseX;
-        current.y = mouseY;
-
-        // New particle's force is based on mouse movement
-        var force = p5.Vector.sub(current, previous);
-        force.mult(0.05);
-        
-        paths[paths.length - 1].add(current, force); // Add new particle      
-        next = millis() + random(100); // Schedule next circle
-
-        // Store mouse values
-        previous.x = current.x;
-        previous.y = current.y;
-
-      }
-
-      for( var i = 0; i < paths.length; i++) {// Draw all paths
-        paths[i].update();
-        paths[i].display();
-      }
-    }
-    
-    function mousePressed() {// Start it up
-      next = 0;
-      painting = true;
-      previous.x = mouseX;
-      previous.y = mouseY;
-      paths.push(new Path());
-    }
-
-    function mouseReleased() { // Stop
-      painting = false;
-    }
-    
-    function Path() {// A Path is a list of particles
-      this.particles = [];
-      this.hue = random(100);
-    }
-
-    Path.prototype.add = function(position, force) {
-      // Add a new particle with a position, force, and hue
-      this.particles.push(new Particle(position, force, this.hue));
-    }
-    
-    Path.prototype.update = function() { // Display path 
-      for (var i = 0; i < this.particles.length; i++) {
-        this.particles[i].update();
-      }
-    }
-    
-    Path.prototype.display = function() {// Display path
-      
-      // Loop through backwards
-      for (var i = this.particles.length - 1; i >= 0; i--) {
-      // If we shold remove it
-      if (this.particles[i].lifespan <= 0) {
-        this.particles.splice(i, 1);      
-      } else {// Otherwise, display it
-        this.particles[i].display(this.particles[i+1]);
-      }
-      }
-
-    }  
-
-    // Particles along the path
-    function Particle(position, force, hue) {
-      this.position = createVector(position.x, position.y);
-      this.velocity = createVector(force.x, force.y);
-      this.drag = 0.95;
-      this.lifespan = 255*random(10);
-    }
-
-    Particle.prototype.update = function() {      
-      this.position.add(this.velocity);// Move it      
-      this.velocity.mult(this.drag);// Slow it down      
-      this.lifespan--;// Fade it out
-    }
-
-    // Draw particle and connect it with a line
-    // Draw a line to another
-    Particle.prototype.display = function(other) {
-      stroke(0, this.lifespan);
-      fill(0, this.lifespan/2);    
-      ellipse(this.position.x,this.position.y, 2, 2);    
-      
-      if (other) { // If we need to draw a line
-      line(this.position.x, this.position.y, other.position.x, other.position.y);
-      }
-    }
-  
-  } // desenhar()
-
-  </script>
 
 </head>
 
 <body>
 
-    <div class="wrapper">
-    
-    <div class="content" role="main">
-
-      <!-- This is the start of content for page -->
-      <title>{{seo.title}}</title>
-
-      {{#if error}}
-        <p class="error">{{error}}</p>
-      
-      {{else}}
-      
-      <!-- Server returns a flag when the user has submitted a choice and we show the results -->
-      
-        {{#if results}}
-
-          <h2>Results</h2>
-          <div class="choice-results">
-            <p>Desenhos submetidos (Ver a página de logs em <a href="/logs">Admin</a>):</p>
-            <p> <!-- Pass arrays from the API to the chart script in page head -->
-              <canvas id="myChart"></canvas>
-              <script type="text/javascript">
-                showChart("{{{ optionNames }}}".split(","), "{{{ optionCounts }}}".split(","));
-              </script>
-            </p>
-            <!-- If the user hasn't already made a choice we show the poll -->
-          </div>
-
-        {{else}} 
-          <div class="choice-form">
-              <p>Qual o desenho base?</p>
-              <!-- Call the server post endpoint when 
-                   the user submits an option in the poll -->
-
-              <form method="post" action="/">
-                <!-- The server script returns the list of language options to offer in the poll -->
-                {{#each optionNames}}
-                  <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
-                  <label for="{{this}}">{{this}}</label>
-                {{/each}}
-                <br /><br />
-                <button type="submit">Selecionar</button>
-              </form> <!-- form method="post" action="/" -->
-
-              <!-- ADD LINK FROM TODO -->
-              <!-- send a query parameter to the server script -->
-              <!-- <p> <a href="/?results=true">Selecionar</a> </p> -->
-
-          </div>
-        
-        {{/if}}      
-
-      {{/if}}
-
-    </div>
-  </div>
-
   <div class="forDraw">
+
     <div class="content" role="mainDraw"> </div>  
-    <div id="canvasForDraw">
-                    <script type="text/javascript">
-
-   
-    var paths = []; // All the paths    
-    var painting = false;// Are we painting?    
-    var next = 0;// How long until the next circle    
-    var current;// Where are we now and where were we?
-    var previous;  
-    var canvas;
     
-    function setup() {
-      canvas = createCanvas(windowWidth, windowHeight);
-      canvas.parent('canvasForDraw');
-      current = createVector(0,0);
-      previous = createVector(0,0);
-    };
+      <div id="canvasForDraw">
 
-    function draw() {
-      {{!-- background(200);     --}}
-      
-      if (millis() > next && painting) { // If it's time for a new point
+         <script type="text/javascript">
+          
+            var paths = []; // All the paths    
+            var painting = false;// Are we painting?    
+            var next = 0;// How long until the next circle    
+            var current;// Where are we now and where were we?
+            var previous;  
+            var canvas;
+            
+            function setup() {
+              canvas = createCanvas(windowWidth, windowHeight);
+              canvas.parent('canvasForDraw');
+              current = createVector(0,0);
+              previous = createVector(0,0);
+            };
 
-        // Grab mouse position      
-        current.x = mouseX;
-        current.y = mouseY;
+            function draw() {
+              {{!-- background(200);     --}}
+              
+              if (millis() > next && painting) { // If it's time for a new point
 
-        // New particle's force is based on mouse movement
-        var force = p5.Vector.sub(current, previous);
-        force.mult(0.05);
-        
-        paths[paths.length - 1].add(current, force); // Add new particle      
-        next = millis() + random(100); // Schedule next circle
+                // Grab mouse position      
+                current.x = mouseX;
+                current.y = mouseY;
 
-        // Store mouse values
-        previous.x = current.x;
-        previous.y = current.y;
+                // New particle's force is based on mouse movement
+                var force = p5.Vector.sub(current, previous);
+                force.mult(0.05);
+                
+                paths[paths.length - 1].add(current, force); // Add new particle      
+                next = millis() + random(100); // Schedule next circle
 
-      }
+                // Store mouse values
+                previous.x = current.x;
+                previous.y = current.y;
 
-      for( var i = 0; i < paths.length; i++) {// Draw all paths
-        paths[i].update();
-        paths[i].display();
-      }
-    }
-    
-    function mousePressed() {// Start it up
-      next = 0;
-      painting = true;
-      previous.x = mouseX;
-      previous.y = mouseY;
-      paths.push(new Path());
-    }
+              }
 
-    function mouseReleased() { // Stop
-      painting = false;
-    }
-    
-    function Path() {// A Path is a list of particles
-      this.particles = [];
-      this.hue = random(100);
-    }
+              for( var i = 0; i < paths.length; i++) {// Draw all paths
+                paths[i].update();
+                paths[i].display();
+              }
+            }
+            
+            function mousePressed() {// Start it up
+              next = 0;
+              painting = true;
+              previous.x = mouseX;
+              previous.y = mouseY;
+              paths.push(new Path());
+            }
 
-    Path.prototype.add = function(position, force) {
-      // Add a new particle with a position, force, and hue
-      this.particles.push(new Particle(position, force, this.hue));
-    }
-    
-    Path.prototype.update = function() { // Display path 
-      for (var i = 0; i < this.particles.length; i++) {
-        this.particles[i].update();
-      }
-    }
-    
-    Path.prototype.display = function() {// Display path
-      
-      // Loop through backwards
-      for (var i = this.particles.length - 1; i >= 0; i--) {
-      // If we shold remove it
-      if (this.particles[i].lifespan <= 0) {
-        this.particles.splice(i, 1);      
-      } else {// Otherwise, display it
-        this.particles[i].display(this.particles[i+1]);
-      }
-      }
+            function mouseReleased() { // Stop
+              painting = false;
+            }
+            
+            function Path() {// A Path is a list of particles
+              this.particles = [];
+              this.hue = random(100);
+            }
 
-    }  
+            Path.prototype.add = function(position, force) {
+              // Add a new particle with a position, force, and hue
+              this.particles.push(new Particle(position, force, this.hue));
+            }
+            
+            Path.prototype.update = function() { // Display path 
+              for (var i = 0; i < this.particles.length; i++) {
+                this.particles[i].update();
+              }
+            }
+            
+            Path.prototype.display = function() {// Display path
+              
+              // Loop through backwards
+              for (var i = this.particles.length - 1; i >= 0; i--) {
+              // If we shold remove it
+              if (this.particles[i].lifespan <= 0) {
+                this.particles.splice(i, 1);      
+              } else {// Otherwise, display it
+                this.particles[i].display(this.particles[i+1]);
+              }
+              }
 
-    // Particles along the path
-    function Particle(position, force, hue) {
-      this.position = createVector(position.x, position.y);
-      this.velocity = createVector(force.x, force.y);
-      this.drag = 0.95;
-      this.lifespan = 255*random(10);
-    }
+            }  
 
-    Particle.prototype.update = function() {      
-      this.position.add(this.velocity);// Move it      
-      this.velocity.mult(this.drag);// Slow it down      
-      this.lifespan--;// Fade it out
-    }
+            // Particles along the path
+            function Particle(position, force, hue) {
+              this.position = createVector(position.x, position.y);
+              this.velocity = createVector(force.x, force.y);
+              this.drag = 0.95;
+              this.lifespan = 255*random(10);
+            }
 
-    // Draw particle and connect it with a line
-    // Draw a line to another
-    Particle.prototype.display = function(other) {
-      stroke(0, this.lifespan);
-      fill(0, this.lifespan/2);    
-      ellipse(this.position.x,this.position.y, 2, 2);    
-      
-      if (other) { // If we need to draw a line
-      line(this.position.x, this.position.y, other.position.x, other.position.y);
-      }
-    }
-  
-              </script>
-    </div>                   
+            Particle.prototype.update = function() {      
+              this.position.add(this.velocity);// Move it      
+              this.velocity.mult(this.drag);// Slow it down      
+              this.lifespan--;// Fade it out
+            }
+
+            // Draw particle and connect it with a line
+            // Draw a line to another
+            Particle.prototype.display = function(other) {
+              stroke(0, this.lifespan);
+              fill(0, this.lifespan/2);    
+              ellipse(this.position.x,this.position.y, 2, 2);    
+              
+              if (other) { // If we need to draw a line
+              line(this.position.x, this.position.y, other.position.x, other.position.y);
+              }
+            }
+          
+        </script>
+
+    </div>       
+
   </div>
 
   <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
