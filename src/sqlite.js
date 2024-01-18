@@ -56,7 +56,7 @@ dbWrapper
 
       } else {
         // We have a database already - write Choices records to log for info
-        console.log(await db.all("SELECT *.time from Desenhos"));
+        console.log(await db.all("SELECT time from Desenhos"));
 
         //If you need to remove a table from the database use this syntax
         //db.run("DROP TABLE Logs"); //will fail if the table doesn't exist
@@ -77,7 +77,7 @@ module.exports = {
   getDesenhos: async () => {
     // We use a try catch block in case of db errors
     try {
-      return await db.all("SELECT * from Desenhos");
+      return await db.all("SELECT time from Desenhos");
     } catch (dbError) {
       // Database connection error
       console.error(dbError);
@@ -92,7 +92,7 @@ module.exports = {
   getOptions: async () => {
     // We use a try catch block in case of db errors
     try {
-      return await db.all("SELECT *.time from Desenhos");
+      return await db.all("SELECT time from Desenhos");
     } catch (dbError) {
       // Database connection error
       console.error(dbError);
@@ -111,7 +111,7 @@ module.exports = {
     try {
       // Check the vote is valid
       const option = await db.all(
-        "SELECT * from Desenhos WHERE time = ?",
+        "SELECT time from Desenhos WHERE time = ?",
         vote
       );
       if (option.length > 0) {
@@ -129,7 +129,7 @@ module.exports = {
       }
 
       // Return the choices so far - page will build these into a chart
-      return await db.all("SELECT *.time from Desenhos");
+      return await db.all("SELECT time from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -139,7 +139,7 @@ module.exports = {
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT *.time from Desenhos ORDER BY time DESC");
+      return await db.all("SELECT time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
