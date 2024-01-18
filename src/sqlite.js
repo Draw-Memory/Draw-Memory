@@ -30,15 +30,19 @@ dbWrapper
       if (!exists) {
         // Desenhos can start empty - 
         // we'll insert a new record whenever the user guarda
-        await db.run(
-          // "CREATE TABLE Desenhos"
-          "CREATE TABLE Desenhos (time)"
-        );
+          await db.run("CREATE TABLE Desenhos (time)");
+
+          db.run(`INSERT INTO Desenhos (time) VALUES (?)`, [Date()], function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+          });
 
       } else {
-        // We have a database already - 
-        // write memories records to log for info
-        console.log(await db.all("SELECT * from Desenhos"));
+          // We have a database already - 
+          // write memories records to log for info
+          console.log(await db.all("SELECT * from Desenhos"));
 
       }
     } catch (dbError) {
