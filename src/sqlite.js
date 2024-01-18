@@ -59,17 +59,15 @@ module.exports = {
   
   processMemory: async memorize => {
     try {
-      const option = await db.all(
-        "SELECT * from Desenhos",
-        memorize
-      );
+      const option = await db.all("SELECT * from Desenhos",memorize);
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
-          memorize,
+          // memorize,
           new Date().toISOString()
         ]);
+        
       }
 
       return await db.all("SELECT * from Desenhos");
@@ -81,7 +79,7 @@ module.exports = {
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
-      return await db.all("SELECT time from Desenhos ORDER BY time DESC");
+      return await db.all("SELECT * from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }

@@ -36,13 +36,14 @@
       {{else}}
 
       <!-- The server script returns the logs in an array -->
-      <!-- Write out a table row for each entry in the log array showing choice and timestamp -->
+      <!-- Write out a table row for each entry in the log 
+           array showing choice and timestamp -->
       {{#if logHistory.length}}
           <div>
             <h2>Lista de desenhos memorizados</h2>
             <table>
               <tr>
-                <th>Timestamp</th>
+                <th>Timestamp do log</th>
               </tr>
               {{#each logHistory}}
                 <tr>
