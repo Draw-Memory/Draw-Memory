@@ -195,7 +195,7 @@ fastify.post("/reset", async (request, reply) => {
       options = await db.processMemory(request.body.language);
       if (options) {
         // We send the memories and numbers in parallel arrays
-        params.time = options.map( time => time ? Date() : undefined);
+        params.time = Date().toString;
       }
     }
     params.error = options ? null : data.errorMessage;

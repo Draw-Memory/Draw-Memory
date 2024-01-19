@@ -29,7 +29,7 @@ dbWrapper
 
       if (!exists) {
         await db.run("CREATE TABLE Desenhos (time TEXT)");
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", Date().toTimeString);
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", Date().toString);
       } else {
           // We have a database already - 
           // write memories records to log for info
