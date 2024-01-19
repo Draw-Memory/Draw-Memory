@@ -29,7 +29,9 @@ dbWrapper
     try {
 
       if (!exists) {
-        await db.run("CREATE TABLE Desenhos (time TEXT)");
+        await db.run("CREATE TABLE Desenhos (time TEXT)");        
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
+                      [new Date(Date.now()).toString()]);  
       } else {
           // We have a database already - 
           // write memories records to log for info
@@ -57,11 +59,8 @@ module.exports = {
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
-        // await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
-              [new Date(Date.now()).toString()]);        
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);   
       }
-
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
