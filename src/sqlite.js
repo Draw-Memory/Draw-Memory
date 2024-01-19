@@ -1,4 +1,4 @@
-/** * Module handles database management
+/*** Module handles database management
  *
  * Server API calls the methods in here to query and update the SQLite database
  */
