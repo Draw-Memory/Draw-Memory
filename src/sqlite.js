@@ -30,7 +30,7 @@ dbWrapper
       if (!exists) {
         // Desenhos can start empty - 
         // we'll insert a new record whenever the user guarda
-          await db.run("CREATE TABLE Desenhos (time)");
+          await db.run("CREATE TABLE Desenhos (time TEXT)");
       } else {
           // We have a database already - 
           // write memories records to log for info
@@ -60,7 +60,7 @@ module.exports = {
         // and the current time into the sql query
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
           memorize,
-          new Date().toISOString()
+          new Date()
         ]);
         
       }
