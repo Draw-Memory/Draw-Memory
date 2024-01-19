@@ -28,7 +28,7 @@ To get best use out of this project you'll ideally be familiar with JavaScript a
 
 When the app runs, the scripts build the database:
 
-← `.data/choices.db`: Your database is created and placed in the `.data` folder, a hidden directory whose contents aren’t copied when a project is remixed. You can see the contents of `.data` in the console by selecting __Tools__ >  __Logs__.
+← `.data/memories.db`: Your database is created and placed in the `.data` folder, a hidden directory whose contents aren’t copied when a project is remixed. You can see the contents of `.data` in the console by selecting __Tools__ >  __Logs__.
 
 ### User interface
 
