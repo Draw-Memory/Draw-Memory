@@ -32,8 +32,7 @@ dbWrapper
           "CREATE TABLE Desenhos (time TEXT)"
         );
         for (let r = 0; r < 5; r++)
-          await db.run(
-            "INSERT INTO Desenhos (time) VALUES (?)", Date.now()
+          await db.run("INSERT INTO Desenhos (time) VALUES (?)", Date.now());
       } else {
           // We have a database already - 
           // write memories records to log for info
