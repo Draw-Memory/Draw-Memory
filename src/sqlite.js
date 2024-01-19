@@ -56,7 +56,8 @@ module.exports = {
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);        
+        // await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", "ggg");        
       }
 
       return await db.all("SELECT * from Desenhos");
