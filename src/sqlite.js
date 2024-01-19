@@ -29,12 +29,10 @@ dbWrapper
 
       if (!exists) {
         await db.run("CREATE TABLE Desenhos (time TEXT)");
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", Date().toString);
       } else {
           // We have a database already - 
           // write memories records to log for info
           console.log(await db.all("SELECT * from Desenhos"));
-          console.log("1");
       }
     } catch (dbError) {
       console.error(dbError);
@@ -69,7 +67,7 @@ module.exports = {
 
   getLogs: async () => {
     try {
-      return await db.all("SELECT * from Desenhos ORDER BY time DESC");
+      return await db.all("SELECT time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
