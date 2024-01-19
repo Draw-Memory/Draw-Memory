@@ -30,7 +30,7 @@ dbWrapper
       if (!exists) {
         await db.run("CREATE TABLE Desenhos (time TEXT)");
         for (let r = 0; r < 5; r++)
-          await db.run("INSERT INTO Desenhos (time) VALUES (?)", new Date());
+          await db.run("INSERT INTO Desenhos (time) VALUES (?)", new Date().toTimeString);
       } else {
           // We have a database already - 
           // write memories records to log for info
@@ -63,7 +63,7 @@ module.exports = {
         console.log("3");
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
           memorize,
-          new Date()
+          new Date().toTimeString
         ]);        
       }
 
