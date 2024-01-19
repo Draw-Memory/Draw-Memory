@@ -34,7 +34,8 @@ dbWrapper
       } else {
           // We have a database already - 
           // write memories records to log for info
-          console.log(await db.all("SELECT * from Desenhos"));
+          // console.log(await db.all("SELECT * from Desenhos"));
+          console.log("1");
       }
     } catch (dbError) {
       console.error(dbError);
@@ -46,6 +47,7 @@ module.exports = {
 
   getDesenhos: async () => {
     try {
+      console.log("2");
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
@@ -58,6 +60,7 @@ module.exports = {
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
+          console.log("3");
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
           memorize,
           new Date()
@@ -74,6 +77,7 @@ module.exports = {
   getLogs: async () => {
     try {
       // Return the array of log entries to admin page
+          console.log("5");
       return await db.all("SELECT * from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
