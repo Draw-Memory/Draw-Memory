@@ -28,15 +28,13 @@ dbWrapper
     try {
 
       if (!exists) {
-        await db.run(
-          "CREATE TABLE Desenhos (time TEXT)"
-        );
+        await db.run("CREATE TABLE Desenhos (time TEXT)");
         for (let r = 0; r < 5; r++)
-          await db.run("INSERT INTO Desenhos (time) VALUES (?)", Date.now());
+          await db.run("INSERT INTO Desenhos (time) VALUES (?)", new Date());
       } else {
           // We have a database already - 
           // write memories records to log for info
-          // console.log(await db.all("SELECT * from Desenhos"));
+          console.log(await db.all("SELECT * from Desenhos"));
           console.log("1");
       }
     } catch (dbError) {
@@ -62,12 +60,11 @@ module.exports = {
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
-          console.log("3");
+        console.log("3");
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
           memorize,
           new Date()
-        ]);
-        
+        ]);        
       }
 
       return await db.all("SELECT * from Desenhos");
