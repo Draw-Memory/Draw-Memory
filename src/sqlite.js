@@ -59,11 +59,7 @@ module.exports = {
       if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
-        console.log("3");
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [
-          memorize,
-          new Date().toTimeString
-        ]);        
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);        
       }
 
       return await db.all("SELECT * from Desenhos");
@@ -74,8 +70,6 @@ module.exports = {
 
   getLogs: async () => {
     try {
-      // Return the array of log entries to admin page
-          console.log("5");
       return await db.all("SELECT * from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
