@@ -26,11 +26,14 @@ dbWrapper
 
     // We use try and catch blocks throughout to handle any database errors
     try {
-      // The async / await syntax lets us write the db operations in a way that won't block the app
+
       if (!exists) {
-        // Desenhos can start empty - 
-        // we'll insert a new record whenever the user guarda
-          await db.run("CREATE TABLE Desenhos (time TEXT)");
+        await db.run(
+          "CREATE TABLE Desenhos (time TEXT)"
+        );
+        for (let r = 0; r < 5; r++)
+          await db.run(
+            "INSERT INTO Desenhos (time) VALUES (?)", Date.now()
       } else {
           // We have a database already - 
           // write memories records to log for info

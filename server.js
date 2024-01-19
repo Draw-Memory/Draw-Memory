@@ -242,6 +242,8 @@ fastify.listen(
       console.error(err);
       process.exit(1);
     }
+    
+    console.log("6");
     console.log(`App is listening on ${address}`);
   }
 ); //fastify.listen
