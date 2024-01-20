@@ -188,7 +188,7 @@ fastify.post("/reset", async (request, reply) => {
 
     // Flag to indicate we want to show the poll results instead of the poll form
     params.results = true;
-    let listaDesenhos = await db.getDesenhos();
+    let listaDesenhos;
     let timestamp = Date.now();
     let timestampString = new Date(timestamp).toString();
 
@@ -203,6 +203,32 @@ fastify.post("/reset", async (request, reply) => {
     params.error = listaDesenhos ? null : data.errorMessage;
 
     // Return the info to the client
+    return request.query.raw
+      ? reply.send(params)
+      : reply.view("/src/pages/index.hbs", params);
+  });
+
+  fastify.get("/gravar", async (request, reply) => {
+    /* Params is the data we pass to the client
+    - SEO values for front-end UI but not for raw data
+    */
+    let params = request.query.raw ? {} : { seo: seo };
+
+    // Get the available memories from the database
+    const listaDesenhos = await db.getDesenhos();
+    if (listaDesenhos) {   
+      params.time = listaDesenhos.map( time => time);
+    }
+    // Let the user know if there was a db error
+    else params.error = data.errorMessage;
+
+    // Check in case the data is empty or not setup yet
+    if (listaDesenhos && params.time.length < 1)
+      params.setup = data.setupMessage;
+
+    // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
+
+    // Send the page listaDesenhos or raw JSON data if the client requested it
     return request.query.raw
       ? reply.send(params)
       : reply.view("/src/pages/index.hbs", params);
