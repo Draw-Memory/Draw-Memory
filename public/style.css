@@ -83,7 +83,7 @@ body {
 
 .content {
   display: flex;
-  flex-direction:column;
+  flex-direction:inherit;
   align-items: center;
   justify-content: center;
   max-width: 80%;
@@ -179,6 +179,6 @@ p.error a:link,
 p.error a:visited {
   color: #2800FF;
 }
-.results {
+/* .results {
   padding-top:10px;
-}
+} */
