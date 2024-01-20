@@ -74,10 +74,8 @@ body {
 
 /* Page structure */
 .wrapper {
-  /* max-height: var(--wrapper-height);
-  max-width: var(--wrapper-width); */  
-  max-width: 80%;
-  max-height: 80%;
+  max-height: var(--wrapper-height);
+  max-width: var(--wrapper-width);
   /* display: grid; */
   place-items: center;
   margin: 0 1rem;
@@ -89,8 +87,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 80%;
-  max-height: 80%;
+  max-height: var(--wrapper-height);
+  max-width: var(--wrapper-width);
 }
 
 p,
@@ -122,18 +120,17 @@ h1 {
 }
 
 /* Styles for our poll form and its results */
-.forDraw,
-.forDraw {
+.choice-form,
+.choice-results {
   background-color: #FFF3FC;
   padding: 0 5px 5px 5px;
   border-radius: 3px;
 }
-.forDraw button:hover {
+.choice-form button:hover {
   cursor: pointer;
   box-shadow: -8px 4px 20px var(--color-primary);
 }
 button,
-
 input {
   font-family: inherit;
   font-size: 100%;
