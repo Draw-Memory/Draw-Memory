@@ -44,10 +44,10 @@
 <body>
 
   <div class="wrapper">
+
     <div class="content" role="main">
   
       <form action="/gravar" method="post">   
-
 
         <!-- Links -->
         <div class="links">
@@ -58,126 +58,122 @@
           <a href="/logs">Admin</a>
         </div>      
 
-        <div class="forDraw">
-          <div class="content" role="main"> 
-            <div id="canvasForDraw">
+        <div id="canvasForDraw">
 
-              <script type="text/javascript">
-                    
-                  var linhas = []; // All linhas    
-                  var painting = false;// Are we painting?    
-                  var next = 0;// How long until the next circle    
-                  var current;// Where are we now and where were we?
-                  var previous;  
-                  var canvas;
+          <script type="text/javascript">
+                
+              var linhas = []; // All linhas    
+              var painting = false;// Are we painting?    
+              var next = 0;// How long until the next circle    
+              var current;// Where are we now and where were we?
+              var previous;  
+              var canvas;
+              
+              function setup() {
+                canvas = createCanvas(windowWidth, windowHeight);
+                canvas.parent('canvasForDraw');
+                current = createVector(0,0);
+                previous = createVector(0,0);
+              };
+
+              function draw() {
+                {{!-- background(200);     --}}
+                
+                if (millis() > next && painting) { // If it's time for a new point
+
+                  // Grab mouse position      
+                  current.x = mouseX;
+                  current.y = mouseY;
+
+                  // New particle's force is based on mouse movement
+                  var force = p5.Vector.sub(current, previous);
+                  force.mult(0.05);
                   
-                  function setup() {
-                    canvas = createCanvas(windowWidth, windowHeight);
-                    canvas.parent('canvasForDraw');
-                    current = createVector(0,0);
-                    previous = createVector(0,0);
-                  };
+                  linhas[linhas.length - 1].add(current, force); // Add new particle      
+                  next = millis() + random(100); // Schedule next circle
 
-                  function draw() {
-                    {{!-- background(200);     --}}
-                    
-                    if (millis() > next && painting) { // If it's time for a new point
+                  // Store mouse values
+                  previous.x = current.x;
+                  previous.y = current.y;
 
-                      // Grab mouse position      
-                      current.x = mouseX;
-                      current.y = mouseY;
+                }
 
-                      // New particle's force is based on mouse movement
-                      var force = p5.Vector.sub(current, previous);
-                      force.mult(0.05);
-                      
-                      linhas[linhas.length - 1].add(current, force); // Add new particle      
-                      next = millis() + random(100); // Schedule next circle
+                for( var i = 0; i < linhas.length; i++) {// Draw all linhas
+                  linhas[i].update();
+                  linhas[i].display();
+                }
+              }
+              
+              function mousePressed() {// Start it up
+                next = 0;
+                painting = true;
+                previous.x = mouseX;
+                previous.y = mouseY;
+                linhas.push(new Path());
+              }
 
-                      // Store mouse values
-                      previous.x = current.x;
-                      previous.y = current.y;
+              function mouseReleased() { // Stop
+                painting = false;
+              }
+              
+              function Path() {// A Path is a list of particles
+                this.particles = [];
+                this.hue = random(100);
+              }
 
-                    }
+              Path.prototype.add = function(position, force) {
+                // Add a new particle with a position, force, and hue
+                this.particles.push(new Particle(position, force, this.hue));
+              }
+              
+              Path.prototype.update = function() { // Display path 
+                for (var i = 0; i < this.particles.length; i++) {
+                  this.particles[i].update();
+                }
+              }
+              
+              Path.prototype.display = function() {// Display path
+                
+                // Loop through backwards
+                for (var i = this.particles.length - 1; i >= 0; i--) {
+                // If we shold remove it
+                if (this.particles[i].lifespan <= 0) {
+                  this.particles.splice(i, 1);      
+                } else {// Otherwise, display it
+                  this.particles[i].display(this.particles[i+1]);
+                }
+                }
 
-                    for( var i = 0; i < linhas.length; i++) {// Draw all linhas
-                      linhas[i].update();
-                      linhas[i].display();
-                    }
-                  }
-                  
-                  function mousePressed() {// Start it up
-                    next = 0;
-                    painting = true;
-                    previous.x = mouseX;
-                    previous.y = mouseY;
-                    linhas.push(new Path());
-                  }
+              }  
 
-                  function mouseReleased() { // Stop
-                    painting = false;
-                  }
-                  
-                  function Path() {// A Path is a list of particles
-                    this.particles = [];
-                    this.hue = random(100);
-                  }
+              // Particles along the path
+              function Particle(position, force, hue) {
+                this.position = createVector(position.x, position.y);
+                this.velocity = createVector(force.x, force.y);
+                this.drag = 0.95;
+                this.lifespan = 255*random(10);
+              }
 
-                  Path.prototype.add = function(position, force) {
-                    // Add a new particle with a position, force, and hue
-                    this.particles.push(new Particle(position, force, this.hue));
-                  }
-                  
-                  Path.prototype.update = function() { // Display path 
-                    for (var i = 0; i < this.particles.length; i++) {
-                      this.particles[i].update();
-                    }
-                  }
-                  
-                  Path.prototype.display = function() {// Display path
-                    
-                    // Loop through backwards
-                    for (var i = this.particles.length - 1; i >= 0; i--) {
-                    // If we shold remove it
-                    if (this.particles[i].lifespan <= 0) {
-                      this.particles.splice(i, 1);      
-                    } else {// Otherwise, display it
-                      this.particles[i].display(this.particles[i+1]);
-                    }
-                    }
+              Particle.prototype.update = function() {      
+                this.position.add(this.velocity);// Move it      
+                this.velocity.mult(this.drag);// Slow it down      
+                this.lifespan--;// Fade it out
+              }
 
-                  }  
+              // Draw particle and connect it with a line
+              // Draw a line to another
+              Particle.prototype.display = function(other) {
+                stroke(0, this.lifespan);
+                fill(0, this.lifespan/2);    
+                ellipse(this.position.x,this.position.y, 2, 2);    
+                
+                if (other) { // If we need to draw a line
+                line(this.position.x, this.position.y, other.position.x, other.position.y);
+                }
+              }
 
-                  // Particles along the path
-                  function Particle(position, force, hue) {
-                    this.position = createVector(position.x, position.y);
-                    this.velocity = createVector(force.x, force.y);
-                    this.drag = 0.95;
-                    this.lifespan = 255*random(10);
-                  }
+          </script>
 
-                  Particle.prototype.update = function() {      
-                    this.position.add(this.velocity);// Move it      
-                    this.velocity.mult(this.drag);// Slow it down      
-                    this.lifespan--;// Fade it out
-                  }
-
-                  // Draw particle and connect it with a line
-                  // Draw a line to another
-                  Particle.prototype.display = function(other) {
-                    stroke(0, this.lifespan);
-                    fill(0, this.lifespan/2);    
-                    ellipse(this.position.x,this.position.y, 2, 2);    
-                    
-                    if (other) { // If we need to draw a line
-                    line(this.position.x, this.position.y, other.position.x, other.position.y);
-                    }
-                  }
-
-              </script>
-
-            </div>       
-          </div>  
         </div>       
        
       </form> 
