@@ -63,7 +63,7 @@ fastify.get("/", async (request, reply) => {
 
   // Get the available memories from the database
   let listaDesenhos = await db.getDesenhos();
-  if (listaDesenhos.lenth) {
+  if (listaDesenhos) {
     params.time = listaDesenhos.map( time => time);
   }
   // Let the user know if there was a db error
@@ -76,6 +76,36 @@ fastify.get("/", async (request, reply) => {
   // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
 
   // Send the page listaDesenhos or raw JSON data if the client requested it
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
+
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.post("/", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+
+  // Flag to indicate we want to show the poll results instead of the poll form
+  params.results = true;
+  let listaDesenhos;
+
+  // We have a memory - send to the db helper to process and return results
+  if (request.body.language) {
+    listaDesenhos = await db.addMemory(request.body.language);
+    if (listaDesenhos) {
+      // We send the memories and numbers in parallel arrays      
+      params.time = listaDesenhos.map( time => time);
+    }
+  }
+  params.error = listaDesenhos ? null : data.errorMessage;
+
+  // Return the info to the client
   return request.query.raw
     ? reply.send(params)
     : reply.view("/src/pages/index.hbs", params);
@@ -163,8 +193,8 @@ fastify.post("/reset", async (request, reply) => {
     let timestampString = new Date(timestamp).toString();
 
     // We have a memory - send to the db helper to process and return results
-    if (request.body.ref) {
-      listaDesenhos = await db.addMemory(request.body.ref);
+    if (request.body.language) {
+      listaDesenhos = await db.addMemory(request.body.language);
       if (listaDesenhos) {
         // We send the memories and numbers in parallel arrays
         params.time = timestampString;

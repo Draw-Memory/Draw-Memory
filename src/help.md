@@ -74,30 +74,3 @@ fastify.listen(3000, function (err, address) {
 })
 AI-generated code. Review and use carefully. More info on FAQ.
 In this example, the server listens on port 3000 and responds with { hello: 'world' } to GET requests at the root URL (/)3.
-
-# The <input> HTML
-
-The <input> HTML element is used to create interactive controls for web-based forms in order to accept data from the user1. The behavior of an <input> element varies considerably depending on the value of its type attribute1. Here are some examples:
-
-<input type="text">: Defines a single-line text input field2.
-<input type="password">: Defines a password field where the characters are masked (shown as asterisks or circles)2.
-<input type="submit">: Defines a button for submitting form data to a form-handler2.
-<input type="reset">: Defines a reset button that will reset all form values to their default values2.
-<input type="file">: A control that lets the user select a file1.
-If the type attribute is not specified, the default type adopted is "text"1. There are many other types you can use in HTML21. Each type has its own characteristics and use cases.
-
-# <input type="submit"> 
-
-The <input type="submit"> HTML element is used to define a submit button in a form1234. When a user clicks this button, it automatically submits all form values to a form-handler1234. The form-handler is typically a server page with a script for processing the input data1234. The form-handler is specified in the form’s action attribute1234.
-
-Here is an example of how it can be used:
-
-HTML
-
-<form action="mywebsite.com" method="POST">
-    <input type="text" placeholder="Enter name" />
-    <input type="password" placeholder="Enter your password" />
-    <input type="submit" value="Enter to Win" />
-</form>
-AI-generated code. Review and use carefully. More info on FAQ.
-In this example, the value attribute of the submit input type defines the text that appears inside the button1. When the user clicks the “Enter to Win” button, the form data is sent to “mywebsite.com” for processing1
