@@ -48,13 +48,7 @@ if (seo.url === "glitch-default") {
 const data = require("./src/data.json");
 const db = require("./src/" + data.database);
 
-/** * Home route for the app
- *
- * Return the poll options from the database helper script
- * The home route may be called on remix in which case the db needs setup
- *
- * Client can request raw data using a query parameter
- */
+/* Home route for the app */
 fastify.get("/", async (request, reply) => {
   /* Params is the data we pass to the client
   - SEO values for front-end UI but not for raw data
@@ -189,7 +183,23 @@ fastify.post("/gravar", async (request, reply) => {
     ? reply.send(params)
     : reply.view("/src/pages/index.hbs", params);
 });
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.getDesenhos("/gravar", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+  let ok = await db.saveMemory('chinelo');
+  params.error = ok ? null : data.errorMessage;
 
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
 // Run the server and report out to the logs
 fastify.listen(
   { port: process.env.PORT, host: "0.0.0.0" },
