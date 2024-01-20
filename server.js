@@ -97,7 +97,7 @@ fastify.post("/", async (request, reply) => {
 
   // We have a memory - send to the db helper to process and return results
   if (request.body.language) {
-    options = await db.processMemory(request.body.language);
+    options = await db.saveMemory(request.body.language);
     if (options) {
       // We send the memories and numbers in parallel arrays      
       params.time = options.map( time => time);
@@ -192,7 +192,7 @@ fastify.post("/reset", async (request, reply) => {
 
     // We have a memory - send to the db helper to process and return results
     if (request.body.language) {
-      options = await db.processMemory(request.body.language);
+      options = await db.saveMemory(request.body.language);
       if (options) {
         // We send the memories and numbers in parallel arrays
         params.time = Date().toString;
