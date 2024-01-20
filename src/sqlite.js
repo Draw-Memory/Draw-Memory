@@ -29,9 +29,7 @@ dbWrapper
     try {
 
       if (!exists) {
-        await db.run("CREATE TABLE Desenhos (time TEXT)");        
-        await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
-                      [new Date(Date.now()).toString()]);  
+        await db.run("CREATE TABLE Desenhos (jsonDraw TEXT, time TEXT)");        
       } else {
           // We have a database already - 
           // write memories records to log for info
@@ -56,7 +54,7 @@ module.exports = {
   saveMemory: async p5draw => {
     try {
       // Build the user data from the front-end and the current time into the sql query
-      await db.run("INSERT INTO Desenhos (desenho, time) VALUES (?, ?)", [
+      await db.run("INSERT INTO Desenhos (jsonDraw, time) VALUES (?, ?)", [
         p5draw,
         new Date(Date.now()).toString()
       ]);

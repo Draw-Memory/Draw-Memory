@@ -186,7 +186,8 @@ fastify.get("/gravar", async (request, reply) => {
 
 fastify.post('/gravar', async(request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
-  let ok = await db.saveMemory(request.p5draw);
+  const p5draw = request.body;
+  let ok = await db.saveMemory(p5draw);
   params.error = ok ? null : data.errorMessage;  
 
   // Return the info to the client
