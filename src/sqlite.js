@@ -27,9 +27,17 @@ dbWrapper
 
     // We use try and catch blocks throughout to handle any database errors
     try {
+
       if (!exists) {
-        await db.run("CREATE TABLE Desenhos (time TEXT)");
-      } 
+        await db.run("CREATE TABLE Desenhos (time TEXT)");        
+        await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
+                      [new Date(Date.now()).toString()]);  
+        console.log(await db.all("SELECT * from Desenhos"));
+      } else {
+          // We have a database already - 
+          // write memories records to log for info
+          console.log(await db.all("SELECT * from Desenhos"));
+      }
     } catch (dbError) {
       console.error(dbError);
     }
@@ -39,48 +47,45 @@ dbWrapper
 module.exports = {
 
   getDesenhos: async () => {
-    try {
-      const listaDesenhos = await db.all("SELECT * from Desenhos");
+    try {console.log(await db.all("SELECT * from Desenhos"));
+      return await db.all("SELECT * from Desenhos");      
     } catch (dbError) {
       console.error(dbError);
     }
-    return listaDesenhos;
   },
   
-  addMemory: async memorize => {
+  processMemory: async memorize => {
     try {
-      const listaDesenhos = await db.all("SELECT * from Desenhos");
-      if (listaDesenhos.length > 0) {
+      const option = await db.all("SELECT * from Desenhos",memorize);
+      if (option.length > 0) {console.log(await db.all("SELECT * from Desenhos"));
         // Build the user data from the front-end 
         // and the current time into the sql query
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);   
-      }
+      }console.log(await db.all("SELECT * from Desenhos"));
+      return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
-    return listaDesenhos;
   },
 
   getLogs: async () => {
-    try {
-      const listaDesenhos = await 
-            db.all("SELECT time from Desenhos ORDER BY time DESC");
+    try {console.log(await db.all("SELECT * from Desenhos"));
+      return await db.all("SELECT time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
     }
-    return listaDesenhos;
-  },  
+  }, 
 
   clearHistory: async () => {
-    try {
+    try {   console.log(await db.all("SELECT * from Desenhos"));
       // Delete the logs
-      const listaDesenhos = await db.run("DELETE from Desenhos");
+      await db.run("DELETE from Desenhos");
+
       // Return empty array
-      // return [];
+      return [];
     } catch (dbError) {
       console.error(dbError);
-    }    
-    return listaDesenhos;
+    }
   }
 
 };

@@ -41,7 +41,7 @@ fastify.register(require("@fastify/view"), {
 // Load and parse SEO data - SEO (Search Engine Optimization)
 const seo = require("./src/seo.json");
 if (seo.url === "glitch-default") {
-    seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
+  seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
 }
 
 // We use a module for handling database operations in /src
@@ -50,7 +50,7 @@ const db = require("./src/" + data.database);
 
 /** * Home route for the app
  *
- * Return the  listaDesenhos from the database helper script
+ * Return the poll options from the database helper script
  * The home route may be called on remix in which case the db needs setup
  *
  * Client can request raw data using a query parameter
@@ -62,20 +62,20 @@ fastify.get("/", async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
 
   // Get the available memories from the database
-  const listaDesenhos = await db.getDesenhos();
-  if (listaDesenhos) {
-    params.time = listaDesenhos.map( time => time);
+  const options = await db.getDesenhos();
+  if (options) {
+    params.time = options.map( time => time);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
 
   // Check in case the data is empty or not setup yet
-  if (listaDesenhos && params.time.length < 1)
+  if (options && params.time.length < 1)
     params.setup = data.setupMessage;
 
   // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
 
-  // Send the page listaDesenhos or raw JSON data if the client requested it
+  // Send the page options or raw JSON data if the client requested it
   return request.query.raw
     ? reply.send(params)
     : reply.view("/src/pages/index.hbs", params);
@@ -93,17 +93,17 @@ fastify.post("/", async (request, reply) => {
 
   // Flag to indicate we want to show the poll results instead of the poll form
   params.results = true;
-  let listaDesenhos;
+  let options;
 
   // We have a memory - send to the db helper to process and return results
   if (request.body.language) {
-    listaDesenhos = await db.addMemory(request.body.language);
-    if (listaDesenhos) {
+    options = await db.processMemory(request.body.language);
+    if (options) {
       // We send the memories and numbers in parallel arrays      
-      params.time = listaDesenhos.map( time => time);
+      params.time = options.map( time => time);
     }
   }
-  params.error = listaDesenhos ? null : data.errorMessage;
+  params.error = options ? null : data.errorMessage;
 
   // Return the info to the client
   return request.query.raw
@@ -188,19 +188,17 @@ fastify.post("/reset", async (request, reply) => {
 
     // Flag to indicate we want to show the poll results instead of the poll form
     params.results = true;
-    let listaDesenhos;
-    let timestamp = Date.now();
-    let timestampString = new Date(timestamp).toString();
+    let options;
 
     // We have a memory - send to the db helper to process and return results
     if (request.body.language) {
-      listaDesenhos = await db.addMemory(request.body.language);
-      if (listaDesenhos) {
+      options = await db.processMemory(request.body.language);
+      if (options) {
         // We send the memories and numbers in parallel arrays
-        params.time = timestampString;
+        params.time = Date().toString;
       }
     }
-    params.error = listaDesenhos ? null : data.errorMessage;
+    params.error = options ? null : data.errorMessage;
 
     // Return the info to the client
     return request.query.raw
@@ -215,20 +213,20 @@ fastify.post("/reset", async (request, reply) => {
     let params = request.query.raw ? {} : { seo: seo };
 
     // Get the available memories from the database
-    const listaDesenhos = await db.getDesenhos();
-    if (listaDesenhos) {   
-      params.time = listaDesenhos.map( time => time);
+    const options = await db.getDesenhos();
+    if (options) {   
+      params.time = options.map( time => time);
     }
     // Let the user know if there was a db error
     else params.error = data.errorMessage;
 
     // Check in case the data is empty or not setup yet
-    if (listaDesenhos && params.time.length < 1)
+    if (options && params.time.length < 1)
       params.setup = data.setupMessage;
 
     // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
 
-    // Send the page listaDesenhos or raw JSON data if the client requested it
+    // Send the page options or raw JSON data if the client requested it
     return request.query.raw
       ? reply.send(params)
       : reply.view("/src/pages/index.hbs", params);
