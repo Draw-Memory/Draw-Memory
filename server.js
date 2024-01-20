@@ -172,10 +172,6 @@ fastify.post("/reset", async (request, reply) => {
     : reply.status(status).view("/src/pages/admin.hbs", params);
 }); // fastify.post("/reset", async (request, reply)
 
-// ---------------------
-// gravar
-// ---------------------
-
   /** * Post route to process user memory
    *
    * Retrieve memory from body data
