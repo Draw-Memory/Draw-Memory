@@ -35,10 +35,10 @@
         <p class="error"> {{error}} </p>
       {{else}}
 
-      <!-- The server script returns the logs in an array -->
-      <!-- Write out a table row for each entry in the log 
-           array showing choice and timestamp -->
-      {{#if logHistory.length}}
+        <!-- The server script returns the logs in an array -->
+        <!-- Write out a table row for each entry in the log 
+            array showing choice and timestamp -->
+        {{#if logHistory.length}}
           <div>
             <h2>Lista de desenhos memorizados</h2>
             <table>
@@ -52,22 +52,22 @@
               {{/each}}
             </table>
           </div>
-      {{else}}
-        <p class="error">Sem desenhos!</p>
-      {{/if}}
-
-      <!-- The user can clear the logs if they first set up an admin key in the env -->
-      <form action="/reset" method="post">        
-        <!-- Server returns a failed flag if the submitted key doesn't match -->
-        {{#if failed}}
-          <p class="error"> {{failed}} </p>
+        {{else}}
+          <p class="error">Sem desenhos!</p>
         {{/if}}
-        <p><em>Introduza a password de Administração para eliminar os desenhos memorizados</em></p>
-        <input type="password" id="pass" name="key" required>
-        <button type="submit">Limpar a lista de desenhos memorizados</button>
-      </form> 
 
-      {{/if}} <!-- Not error -->
+        <!-- The user can clear the logs if they first set up an admin key in the env -->
+        <form action="/reset" method="post">        
+          <!-- Server returns a failed flag if the submitted key doesn't match -->
+          {{#if failed}}
+            <p class="error"> {{failed}} </p>
+          {{/if}}
+          <p><em>Introduza a password de Administração para eliminar os desenhos memorizados</em></p>
+          <input type="password" id="pass" name="key" required>
+          <button type="submit">Limpar a lista de desenhos memorizados</button>
+        </form> 
+
+      {{/if}}
       
     </div>
   </div>

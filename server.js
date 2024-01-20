@@ -172,63 +172,23 @@ fastify.post("/reset", async (request, reply) => {
     : reply.status(status).view("/src/pages/admin.hbs", params);
 }); // fastify.post("/reset", async (request, reply)
 
-  /** * Post route to process user memory
-   *
-   * Retrieve memory from body data
-   * Send memory to database helper
-   * Return updated list of memories
-   */
-  fastify.post("/gravar", async (request, reply) => {
-    // We only send seo if the client is requesting the front-end ui
-    let params = request.query.raw ? {} : { seo: seo };
+/** * Post route to process user memory
+ *
+ * Retrieve memory from body data
+ * Send memory to database helper
+ * Return updated list of memories
+ */
+fastify.post("/gravar", async (request, reply) => {
+  // We only send seo if the client is requesting the front-end ui
+  let params = request.query.raw ? {} : { seo: seo };
+  let ok = await db.saveMemory('chinelo');
+  params.error = ok ? null : data.errorMessage;
 
-    // Flag to indicate we want to show the poll results instead of the poll form
-    params.results = true;
-    let options;
-
-    // We have a memory - send to the db helper to process and return results
-    if (request.body.language) {
-      options = await db.saveMemory(request.body.language);
-      if (options) {
-        // We send the memories and numbers in parallel arrays
-        params.time = Date().toString;
-      }
-    }
-    params.error = options ? null : data.errorMessage;
-
-    // Return the info to the client
-    return request.query.raw
-      ? reply.send(params)
-      : reply.view("/src/pages/index.hbs", params);
-  });
-
-  fastify.get("/gravar", async (request, reply) => {
-    /* Params is the data we pass to the client
-    - SEO values for front-end UI but not for raw data
-    */
-    let params = request.query.raw ? {} : { seo: seo };
-
-    // Get the available memories from the database
-    const options = await db.getDesenhos();
-    if (options) {   
-      params.time = options.map( time => time);
-    }
-    // Let the user know if there was a db error
-    else params.error = data.errorMessage;
-
-    // Check in case the data is empty or not setup yet
-    if (options && params.time.length < 1)
-      params.setup = data.setupMessage;
-
-    // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
-
-    // Send the page options or raw JSON data if the client requested it
-    return request.query.raw
-      ? reply.send(params)
-      : reply.view("/src/pages/index.hbs", params);
-  });
-
-// ---------------------
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
 
 // Run the server and report out to the logs
 fastify.listen(
@@ -242,4 +202,4 @@ fastify.listen(
     console.log("6");
     console.log(`App is listening on ${address}`);
   }
-); //fastify.listen
+);

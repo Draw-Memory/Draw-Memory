@@ -55,8 +55,8 @@ module.exports = {
   
   saveMemory: async () => {
     try {
-      await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
-                    [new Date(Date.now()).toString()]);
+      await db.run("INSERT INTO Desenhos (time) VALUES (?)", 'batata');
+                    // [new Date(Date.now()).toString()]);
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
