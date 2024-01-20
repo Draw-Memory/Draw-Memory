@@ -164,10 +164,10 @@
               if (other) { // If we need to draw a line
               line(this.position.x, this.position.y, other.position.x, other.position.y);
               }
-            }
+          }
 
           async function uploadDrawing() {
-            const reply = await fetch('./gravar', {
+            const response = await fetch('/gravar', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
