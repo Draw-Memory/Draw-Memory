@@ -47,7 +47,7 @@
         <a href="/logs">Admin</a>
       </div>      
 
-      <form method="post" action="/gravar">   
+      <form method="post" action="/gravar" id="Desenho">   
 
         <div id="canvasForDraw">
 
@@ -166,9 +166,16 @@
           </script>
 
         </div>    
-               
+
       </form> 
-<div class="submit">Submit the form by clicking this</div>
+
+      <script>
+        const myForm = document.getElementById("Desenho");
+        document.querySelector(".submit").addEventListener("click", function () {
+          myForm.submit();
+        });
+      </script>
+
     </div>  
   </div>  
 
