@@ -41,7 +41,7 @@ fastify.register(require("@fastify/view"), {
 // Load and parse SEO data - SEO (Search Engine Optimization)
 const seo = require("./src/seo.json");
 if (seo.url === "glitch-default") {
-  seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
+    seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
 }
 
 // We use a module for handling database operations in /src
@@ -50,32 +50,32 @@ const db = require("./src/" + data.database);
 
 /** * Home route for the app
  *
- * Return the poll options from the database helper script
+ * Return the poll desenhos from the database helper script
  * The home route may be called on remix in which case the db needs setup
  *
  * Client can request raw data using a query parameter
  */
 fastify.get("/", async (request, reply) => {
   /* Params is the data we pass to the client
-  - SEO values for front-end UI but not for raw data
-  */
+  - SEO values for front-end UI but not for raw data*/
   let params = request.query.raw ? {} : { seo: seo };
 
   // Get the available memories from the database
-  const options = await db.getDesenhos();
-  if (options) {
-    params.time = options.map( time => time);
+  const desenhos = await db.getDesenhos();
+  if (desenhos) {
+    params.time      = desenhos.map( time => time);
+    params.p5draw = desenhos.map( desenho => desenho);
   }
   // Let the user know if there was a db error
   else params.error = data.errorMessage;
 
   // Check in case the data is empty or not setup yet
-  if (options && params.time.length < 1)
+  if (desenhos && params.time.length < 1)
     params.setup = data.setupMessage;
 
   // ~+++++++++++++++++++ADD PARAMS FROM TODO HERE
 
-  // Send the page options or raw JSON data if the client requested it
+  // Send the page desenhos or raw JSON data if the client requested it
   return request.query.raw
     ? reply.send(params)
     : reply.view("/src/pages/index.hbs", params);
@@ -93,17 +93,17 @@ fastify.post("/", async (request, reply) => {
 
   // Flag to indicate we want to show the poll results instead of the poll form
   params.results = true;
-  let options;
+  let desenhos;
 
   // We have a memory - send to the db helper to process and return results
-  if (request.body.language) {
-    options = await db.saveMemory(request.body.language);
-    if (options) {
-      // We send the memories and numbers in parallel arrays      
-      params.time = options.map( time => time);
+  if (request.body.p5draw) {
+    desenhos = await db.saveMemory(request.body.p5draw);
+    if (desenhos) {   
+      params.time   = desenhos.map( time => time);
+      params.p5draw = desenhos.map( desenho => desenho);
     }
   }
-  params.error = options ? null : data.errorMessage;
+  params.error = desenhos ? null : data.errorMessage;
 
   // Return the info to the client
   return request.query.raw
@@ -170,13 +170,25 @@ fastify.post("/reset", async (request, reply) => {
   return request.query.raw
     ? reply.status(status).send(params)
     : reply.status(status).view("/src/pages/admin.hbs", params);
-}); // fastify.post("/reset", async (request, reply)
+});
 
 fastify.get("/gravar", async (request, reply) => {
   // We only send seo if the client is requesting the front-end ui
   let params = request.query.raw ? {} : { seo: seo };
-  let ok = await db.saveMemory('chinelo');
+  let ok = await db.saveMemory(params.p5draw);
   params.error = ok ? null : data.errorMessage;
+
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
+});
+
+fastify.post('/gravar', (request, reply) => {
+  let params = request.query.raw ? {} : { seo: seo };
+  let p5draw = request.body;
+  let ok = await db.saveMemory(p5draw);
+  params.error = ok ? null : data.errorMessage;  
 
   // Return the info to the client
   return request.query.raw

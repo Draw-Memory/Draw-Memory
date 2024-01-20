@@ -53,10 +53,14 @@ module.exports = {
     }
   },
   
-  saveMemory: async () => {
+  saveMemory: async p5draw => {
     try {
-      await db.run("INSERT INTO Desenhos (time) VALUES (?)", 'batata');
-                    // [new Date(Date.now()).toString()]);
+      // Build the user data from the front-end and the current time into the sql query
+      await db.run("INSERT INTO Desenhos (desenho, time) VALUES (?, ?)", [
+        p5draw,
+        new Date(Date.now()).toString()
+      ]);
+
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
