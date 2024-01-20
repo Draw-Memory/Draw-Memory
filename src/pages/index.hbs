@@ -31,13 +31,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
 
   <!-- Links -->
-  <div class="links">
+  {{!-- <div class="links">
     <a href="/gravar">Memorizar</a>
     <span class="divider">|</span>
     <a href="/">Desenhar</a>
     <span class="divider">|</span>
     <a href="/logs">Admin</a>
-  </div>  
+  </div>   --}}
 
 </head>
 
@@ -170,12 +170,15 @@
           </div>  
         </div>       
 
-        <!-- Server returns a failed flag if the submitted key doesn't match -->
-        {{#if failed}}
-          <p class="error"> {{failed}} </p>
-        {{/if}}
-        <button type="submit">gravar</button>
-
+        <!-- Links -->
+        <div class="links">
+          <a href="/gravar">Memorizar</a>
+          <span class="divider">|</span>
+          <a href="/">Desenhar</a>
+          <span class="divider">|</span>
+          <a href="/logs">Admin</a>
+        </div>
+        
       </form> 
 
     </div>  
