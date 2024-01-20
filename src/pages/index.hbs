@@ -38,16 +38,16 @@
 
     <div class="content" role="main">
   
-      <form action="/gravar" method="post">   
+      <!-- Links -->
+      <div class="links">
+        <a href="/gravar">Memorizar</a>
+        <span class="divider">|</span>
+        <a href="/">Desenhar</a>
+        <span class="divider">|</span>
+        <a href="/logs">Admin</a>
+      </div>      
 
-        <!-- Links -->
-        <div class="links">
-          <a href="/gravar">Memorizar</a>
-          <span class="divider">|</span>
-          <a href="/">Desenhar</a>
-          <span class="divider">|</span>
-          <a href="/logs">Admin</a>
-        </div>      
+      <form method="post" action="/gravar">   
 
         <div id="canvasForDraw">
 
@@ -165,10 +165,10 @@
 
           </script>
 
-        </div>       
-       
+        </div>    
+               
       </form> 
-
+<div class="submit">Submit the form by clicking this</div>
     </div>  
   </div>  
 
