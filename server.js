@@ -62,7 +62,7 @@ fastify.get("/", async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
 
   // Get the available memories from the database
-  let listaDesenhos = await db.getDesenhos();
+  const listaDesenhos = await db.getDesenhos();
   if (listaDesenhos) {
     params.time = listaDesenhos.map( time => time);
   }
