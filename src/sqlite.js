@@ -32,7 +32,6 @@ dbWrapper
         await db.run("CREATE TABLE Desenhos (time TEXT)");        
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", 
                       [new Date(Date.now()).toString()]);  
-        console.log(await db.all("SELECT * from Desenhos"));
       } else {
           // We have a database already - 
           // write memories records to log for info
@@ -47,8 +46,8 @@ dbWrapper
 module.exports = {
 
   getDesenhos: async () => {
-    try {console.log(await db.all("SELECT * from Desenhos"));
-      return await db.all("SELECT * from Desenhos");      
+    try {
+      return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
     }
@@ -57,11 +56,11 @@ module.exports = {
   processMemory: async memorize => {
     try {
       const option = await db.all("SELECT * from Desenhos",memorize);
-      if (option.length > 0) {console.log(await db.all("SELECT * from Desenhos"));
+      if (option.length > 0) {
         // Build the user data from the front-end 
         // and the current time into the sql query
         await db.run("INSERT INTO Desenhos (time) VALUES (?)", [memorize]);   
-      }console.log(await db.all("SELECT * from Desenhos"));
+      }
       return await db.all("SELECT * from Desenhos");
     } catch (dbError) {
       console.error(dbError);
@@ -69,7 +68,7 @@ module.exports = {
   },
 
   getLogs: async () => {
-    try {console.log(await db.all("SELECT * from Desenhos"));
+    try {
       return await db.all("SELECT time from Desenhos ORDER BY time DESC");
     } catch (dbError) {
       console.error(dbError);
@@ -77,7 +76,7 @@ module.exports = {
   }, 
 
   clearHistory: async () => {
-    try {   console.log(await db.all("SELECT * from Desenhos"));
+    try {   
       // Delete the logs
       await db.run("DELETE from Desenhos");
 
