@@ -102,3 +102,44 @@ async function uploadDrawing() {
 }
 
 In this example, a “Save Drawing” button is created in the setup() function. When this button is clicked, it triggers the uploadDrawing() function, which sends the drawing data to the server1234. The drawing data is captured whenever the mouse is pressed and moved. The mouseIsPressed is a p5.js system variable that always contains a true/false value depending on whether the mouse button is currently being pressed.
+
+## Save a p5.js drawing as an array of points in a database with fastify
+
+Fastify, a fast and low overhead web framework for Node.js, to handle the server-side logic.
+
+### Capture the drawing: As the user draws on the canvas, capture the x and y coordinates of the points. You can do this by pushing the points into an array in the mouseDragged function.
+
+JavaScript
+
+let points = [];
+function mouseDragged() {
+  points.push(createVector(mouseX, mouseY));
+}
+
+### Send the drawing to the server: Now, you need to send this data to a server where it can be stored in a database. You can use the fetch API to send a POST request to your server with the drawing data.
+
+async function uploadDrawing() {
+  const response = await fetch('/api', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(points)
+  });
+  const data = await response.json();
+  console.log(data.status);
+}
+
+### Server-side code with Fastify: On the server side, you can use Fastify to handle the POST request and save the data in a database. Here’s a basic example of how you might handle the POST request in your server.js file:
+
+fastify.post('/api', async (request, reply) => {
+  const data = request.body;
+  // Here, you would insert the data into your database.
+  // The specific code depends on what kind of database you're using.
+  // database.insert(data);
+  return {
+    status: 'success',
+    timestamp: Date.now(),
+    points: data
+  };
+});
