@@ -184,7 +184,7 @@ fastify.get("/gravar", async (request, reply) => {
     : reply.view("/src/pages/index.hbs", params);
 });
 
-fastify.post('/gravar', (request, reply) => {
+fastify.post('/gravar', async(request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
   let p5draw = request.body;
   let ok = await db.saveMemory(p5draw);
