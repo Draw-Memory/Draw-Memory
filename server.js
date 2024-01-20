@@ -172,23 +172,6 @@ fastify.post("/reset", async (request, reply) => {
     : reply.status(status).view("/src/pages/admin.hbs", params);
 }); // fastify.post("/reset", async (request, reply)
 
-/** * Post route to process user memory
- *
- * Retrieve memory from body data
- * Send memory to database helper
- * Return updated list of memories
- */
-fastify.post("/gravar", async (request, reply) => {
-  // We only send seo if the client is requesting the front-end ui
-  let params = request.query.raw ? {} : { seo: seo };
-  let ok = await db.saveMemory('chinelo');
-  params.error = ok ? null : data.errorMessage;
-
-  // Return the info to the client
-  return request.query.raw
-    ? reply.send(params)
-    : reply.view("/src/pages/index.hbs", params);
-});
 fastify.get("/gravar", async (request, reply) => {
   // We only send seo if the client is requesting the front-end ui
   let params = request.query.raw ? {} : { seo: seo };
