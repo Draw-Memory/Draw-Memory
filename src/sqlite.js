@@ -28,6 +28,7 @@ dbWrapper
     // We use try and catch blocks throughout to handle any database errors
     try {
 
+      db.run("DROP TABLE Desenhos");
       if (!exists) {
         await db.run("CREATE TABLE Desenhos (jsonDraw TEXT, time TEXT)");        
       } else {
