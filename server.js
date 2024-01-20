@@ -87,17 +87,15 @@ fastify.get("/", async (request, reply) => {
  * Send memory to database helper
  * Return updated list of memories
  */
-fastify.post("/", async (request, reply) => {
-  // We only send seo if the client is requesting the front-end ui
-  let params = request.query.raw ? {} : { seo: seo };
 
-  // Flag to indicate we want to show the poll results instead of the poll form
+fastify.post('/', async(request, reply) => {
+  let params = request.query.raw ? {} : { seo: seo };
   params.results = true;
+  const p5draw = request.body;
   let desenhos;
 
-  // We have a memory - send to the db helper to process and return results
-  if (request.body.p5draw) {
-    desenhos = await db.saveMemory(request.body.p5draw);
+  if (p5draw) {
+    desenhos = await db.saveMemory(p5draw);
     if (desenhos) {   
       params.time   = desenhos.map( time => time);
       params.p5draw = desenhos.map( desenho => desenho);

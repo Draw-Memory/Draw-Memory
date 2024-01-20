@@ -15,6 +15,7 @@ If it isn’t, the function returns undefined.
 The resulting array positiveNumbers 
 contains only the elements that are greater than 0, 
 ith the other elements replaced by undefined.
+
 # SQLite
 ## Help INSERT INTO
 sqlite3 library in Node.js to run an SQL command.
@@ -33,6 +34,7 @@ AI-generated code. Review and use carefully. More info on FAQ.
 Please replace table_name with the name of your table, and column1, column2, column3, ... with the names of the columns you want to insert data into. Similarly, replace value1, value2, value3, ... with the corresponding values you want to insert.
 
 The ? in the VALUES clause are placeholders for the values you want to insert, and they are replaced by the values in the array [value1, value2, value3, ...]. This is done to avoid SQL injection attacks.
+
 # Glitch
 ## Save a p5.js drawing as an array of points in a database with Glitch without using a file.
 
@@ -102,7 +104,6 @@ async function uploadDrawing() {
 }
 
 In this example, a “Save Drawing” button is created in the setup() function. When this button is clicked, it triggers the uploadDrawing() function, which sends the drawing data to the server1234. The drawing data is captured whenever the mouse is pressed and moved. The mouseIsPressed is a p5.js system variable that always contains a true/false value depending on whether the mouse button is currently being pressed.
-
 ## Save a p5.js drawing as an array of points in a database with fastify
 
 Fastify, a fast and low overhead web framework for Node.js, to handle the server-side logic.
