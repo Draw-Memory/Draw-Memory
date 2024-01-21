@@ -66,13 +66,12 @@ END default styles
 body {
   font-family: HK Grotesk;
   background-color: var(--color-bg);
+  align-items: center;
 }
 
 .p5Canvas {
   width: 70%;
   height: 60%;
-  /* max-height: var(--wrapper-height);
-  max-width: var(--wrapper-width);   */
   align-items: center;
 }
 
@@ -135,7 +134,17 @@ input {
 }
 button {
   cursor: pointer;
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  align-items: center;
 }
+
 label {
   color: #000000;
   font-weight: bold;
