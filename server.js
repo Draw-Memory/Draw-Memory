@@ -170,18 +170,6 @@ fastify.post("/reset", async (request, reply) => {
     : reply.status(status).view("/src/pages/admin.hbs", params);
 });
 
-fastify.get("/gravar", async (request, reply) => {
-  // We only send seo if the client is requesting the front-end ui
-  let params = request.query.raw ? {} : { seo: seo };
-  let ok = await db.saveMemory(params.p5draw);
-  params.error = ok ? null : data.errorMessage;
-
-  // Return the info to the client
-  return request.query.raw
-    ? reply.send(params)
-    : reply.view("/src/pages/index.hbs", params);
-});
-
 fastify.post('/gravar', async(request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
   const p5draw = request.body;

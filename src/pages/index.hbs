@@ -66,6 +66,14 @@
           let saveButton = createButton('Gravar desenho');
           saveButton.mousePressed(uploadDrawing);
         };
+
+        async function uploadDrawing() {
+          const reply = await fetch('/gravar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(points)
+          });
+        }        
         
         function draw() {
           {{!-- background(200);     --}}
@@ -163,16 +171,8 @@
             }
         }
 
-        async function uploadDrawing() {
-          const response = await fetch('/gravar', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            p5draw: JSON.stringify(points)
-          });
-        }
-
       </script>
-      
+
    </div>  
   </div>  
 
