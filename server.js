@@ -195,6 +195,21 @@ fastify.post('/gravar', async(request, reply) => {
     : reply.view("/src/pages/index.hbs", params);
 });
 
+// Handle POST requests to /api
+fastify.post('/api', async (request, reply) => {
+  const points = request.body;
+
+  // Insert each point into the database
+  const stmt = db.prepare("INSERT INTO points VALUES (?, ?)");
+  for (let point of points) {
+    stmt.run(point.x, point.y);
+  }
+  stmt.finalize();
+
+  return { status: 'success' };
+});
+
+
 // Run the server and report out to the logs
 fastify.listen(
   { port: process.env.PORT, host: "0.0.0.0" },

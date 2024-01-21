@@ -23,11 +23,16 @@ dbWrapper
     driver: sqlite3.Database
   })
   .then(async dBase => {
-    
+
     db = dBase;
 
     // We use try and catch blocks throughout to handle any database errors
     try {
+
+      // Create a table for the points
+      db.serialize(function() {
+        db.run("CREATE TABLE points (x INT, y INT)");
+      });
 
       // db.run("DROP TABLE Desenhos");
       if (!exists) {

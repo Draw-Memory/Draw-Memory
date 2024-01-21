@@ -175,3 +175,82 @@ fastify.get('/example', async (request, reply) => {
 });
 
 In this example, the handler function is an async function that gets passed the request and reply objects. It constructs a JSON response with a status code of 200.
+
+## Save a p5.js drawing as an array of points in a SQLite database using Fastify and Glitch
+
+### Server-side code with Fastify and SQLite:
+
+JavaScript
+
+// server.js
+const fastify = require('fastify')({ logger: true });
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database(':memory:');
+
+// Create a table for the points
+db.serialize(function() {
+  db.run("CREATE TABLE points (x INT, y INT)");
+});
+
+// Handle POST requests to /api
+fastify.post('/api', async (request, reply) => {
+  const points = request.body;
+
+  // Insert each point into the database
+  const stmt = db.prepare("INSERT INTO points VALUES (?, ?)");
+  for (let point of points) {
+    stmt.run(point.x, point.y);
+  }
+  stmt.finalize();
+
+  return { status: 'success' };
+});
+
+
+### Client-side code with p5.js:
+
+HTML
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js Sketch</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <script>
+    let points = [];
+
+    function setup() {
+      createCanvas(400, 400);
+      background(220);
+
+      let saveButton = createButton('Save Drawing');
+      saveButton.mousePressed(uploadDrawing);
+    }
+
+    function draw() {
+      if (mouseIsPressed) {
+        points.push(createVector(mouseX, mouseY));
+        ellipse(mouseX, mouseY, 10);
+      }
+    }
+
+    async function uploadDrawing() {
+      const response = await fetch('/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(points)
+      });
+      const data = await response.json();
+      console.log(data.status);
+    }
+  </script>
+</body>
+</html>
+
