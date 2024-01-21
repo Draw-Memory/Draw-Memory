@@ -196,7 +196,7 @@ fastify.post('/gravar', async(request, reply) => {
 });
 
 // Handle POST requests to /api
-fastify.post('/api', async (request, reply) => {
+fastify.get('/api', async (request, reply) => {
   const p5draw = request.body;
 
   // Insert each point into the database
