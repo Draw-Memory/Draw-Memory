@@ -144,3 +144,34 @@ fastify.post('/api', async (request, reply) => {
     points: data
   };
 });
+
+# Fastify
+
+## Fastify is a web framework for Node.js that is designed to be fast and low overhead. In Fastify, every route handler function gets passed two parameters: request and reply
+
+### Request: The request object represents the HTTP request. 
+It includes properties and methods to examine the request 
+  headers, 
+  query parameters, 
+  body, and more.
+For example, request.body gives you access to the parsed body of the request, and request.params gives you access to the route parameters.
+
+### Reply: The reply object is used to construct the HTTP response. 
+It provides methods for specifying the response 
+  code, 
+  setting headers, 
+  and sending the response body. 
+For example, 
+  reply.code(200) sets the status code to 200, 
+  reply.header('Content-Type', 'application/json') sets the Content-Type header, and reply.send({ hello: 'world' }) sends a JSON response.
+
+### Here’s an example of a Fastify route handler:
+
+JavaScript
+
+fastify.get('/example', async (request, reply) => {
+  const data = { hello: 'world' };
+  reply.code(200).header('Content-Type', 'application/json').send(data);
+});
+
+In this example, the handler function is an async function that gets passed the request and reply objects. It constructs a JSON response with a status code of 200.

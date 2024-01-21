@@ -47,7 +47,7 @@
         <a href="/logs">Admin</a>
       </div>      
 
-      <form method="post" action="/gravar" id="Desenho">          
+      <form method="post" action="/gravar" id="p5draw">          
 
         <div id="canvasForDraw"></div>   
 
@@ -169,13 +169,9 @@
           async function uploadDrawing() {
             const response = await fetch('/gravar', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(points)
+              headers: {'Content-Type': 'application/json'},
+              p5draw: JSON.stringify(points)
             });
-            const data = await response.json();
-            console.log(data.status);
           }
 
         </script>
