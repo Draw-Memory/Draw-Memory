@@ -65,16 +65,10 @@
         saveButton.mousePressed(uploadDrawing);
       };
 
-      async function uploadDrawing() {
-        const response = await fetch(${address}&'/api', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(points)
-        });
-        const data = await response.json();
-        console.log(data.status);
-      }      
-      
+      let div = createDiv('This is some text.');
+      div.html('<a href="/api">Save</a>');  // Sets the inner HTML of the div
+      let s = div.html();  // Gets the inner HTML of the div
+
       function draw() {
         {{!-- background(200);     --}}
         
