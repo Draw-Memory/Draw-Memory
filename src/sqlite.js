@@ -29,11 +29,11 @@ dbWrapper
     // We use try and catch blocks throughout to handle any database errors
     try {
 
-      db.run("DROP TABLE points");      
+      db.run("DROP TABLE Points");      
       db.run("DROP TABLE Desenhos");
 
       if (!exists) {
-        await db.run("CREATE TABLE points (x INT, y INT)");
+        await db.run("CREATE TABLE Points (x INT, y INT)");
         await db.run("CREATE TABLE Desenhos (jsonDraw TEXT, time TEXT)");        
       } else {
           // We have a database already - 
@@ -55,6 +55,21 @@ module.exports = {
       console.error(dbError);
     }
   },
+
+  savePoints: async p5draw => {
+    try {
+      // Build the user data from the front-end and the current time into the sql query
+      const stmt = await db.prepare("INSERT INTO Points VALUES (?, ?)");
+      for (let point of p5draw) {
+        await stmt.run(point.x, point.y);
+      }
+      stmt.finalize();
+
+      return await db.all("SELECT * from Points");
+    } catch (dbError) {
+      console.error(dbError);
+    }
+  },  
   
   saveMemory: async p5draw => {
     try {
