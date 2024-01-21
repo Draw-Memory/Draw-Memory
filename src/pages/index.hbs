@@ -65,10 +65,12 @@
         saveButton.mousePressed(uploadDrawing);
       };
 
-      let div = createDiv('This is some text.');
-      div.html('<a href="/api">Save</a>');  // Sets the inner HTML of the div
-      let s = div.html();  // Gets the inner HTML of the div
-
+      async function uploadDrawing() {
+        let div = createDiv('This is some text.');
+        div.html('<a href="/api">Save</a>');  // Sets the inner HTML of the div
+        let s = div.html();  // Gets the inner HTML of the div
+      }      
+      
       function draw() {
         {{!-- background(200);     --}}
         
