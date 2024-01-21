@@ -1,10 +1,6 @@
 /******************************************************************************
-START Glitch hello-app default styles
-
 The styles in this section do some minimal CSS resets, set default fonts and 
-colors, and handle the layout for our footer and "Remix on Glitch" button. If
-you're new to CSS they may seem a little complicated, but you can scroll down
-to this section's matching END comment to see page-specific styles.
+colors, and handle the layout for our footer. 
 ******************************************************************************/
 /* Our default values set as CSS variables */
 :root {
@@ -13,7 +9,7 @@ to this section's matching END comment to see page-specific styles.
   --color-primary: #D7F5EF;
   --wrapper-height: 80vh;
   --wrapper-width: 80wh;
-  /* --image-max-width: 300px; */
+  --image-max-width: 300px; 
   --image-margin: 3rem;
   --font-family: "HK Grotesk";
   --font-family-header: "HK Grotesk";
@@ -64,7 +60,7 @@ to this section's matching END comment to see page-specific styles.
   padding: 0 1rem;
 }
 /******************************************************************************
-END Glitch hello-app default styles
+END default styles
 ******************************************************************************/
 
 body {
@@ -76,13 +72,13 @@ body {
 .wrapper {
   max-height: var(--wrapper-height);
   max-width: var(--wrapper-width);
-  /* display: grid; */
+  display: grid;
   place-items: center;
   margin: 0 1rem;
 }
 
 .content {
-  /* display: flex; */
+  display: flex;
   display:contents;
   flex-direction: column;
   align-items: center;
@@ -108,18 +104,7 @@ h1 {
   margin: 2rem 0 0;
 }
 
-/* Very light scaling for our illustration */
-.illo-container {
-  display: flex;
-  justify-content: flex-end;
-}
-.illustration {
-  max-width: 80%;
-  max-height: 80%;
-  margin-top: 1rem;
-}
-
-/* Styles for our poll form and its results */
+/* Styles for our  form and its results */
 .choice-form,
 .choice-results {
   background-color: #FFF3FC;
