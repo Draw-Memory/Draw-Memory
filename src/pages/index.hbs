@@ -68,9 +68,7 @@
       async function uploadDrawing() {
         const response = await fetch('/api', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(points)
         });
         const data = await response.json();

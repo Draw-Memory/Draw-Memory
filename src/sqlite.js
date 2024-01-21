@@ -29,13 +29,11 @@ dbWrapper
     // We use try and catch blocks throughout to handle any database errors
     try {
 
-      // Create a table for the points
-      db.serialize(function() {
-        db.run("CREATE TABLE points (x INT, y INT)");
-      });
+      db.run("DROP TABLE points");      
+      db.run("DROP TABLE Desenhos");
 
-      // db.run("DROP TABLE Desenhos");
       if (!exists) {
+        await db.run("CREATE TABLE points (x INT, y INT)");
         await db.run("CREATE TABLE Desenhos (jsonDraw TEXT, time TEXT)");        
       } else {
           // We have a database already - 
