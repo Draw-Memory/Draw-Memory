@@ -69,8 +69,11 @@ body {
 }
 
 .p5Canvas {
-  max-height: var(--wrapper-height);
-  max-width: var(--wrapper-width);  
+  width: 80%;
+  height: 80%;
+  /* max-height: var(--wrapper-height);
+  max-width: var(--wrapper-width);   */
+  align-items: center;
 }
 
 /* Page structure */
