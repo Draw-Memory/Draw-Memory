@@ -223,5 +223,3 @@ fastify.listen(
     console.log(`App is listening on ${address}`);
   }
 );
-
-etch('http://localhost:3000/api'
