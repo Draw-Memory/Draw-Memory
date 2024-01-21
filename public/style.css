@@ -69,8 +69,8 @@ body {
 }
 
 .p5Canvas {
-  width: 80%;
-  height: 80%;
+  width: 70%;
+  height: 70%;
   /* max-height: var(--wrapper-height);
   max-width: var(--wrapper-width);   */
   align-items: center;
