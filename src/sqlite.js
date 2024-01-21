@@ -59,12 +59,10 @@ module.exports = {
   savePoints: async p5draw => {
     try {
       // Build the user data from the front-end and the current time into the sql query
-      const stmt = await db.prepare("INSERT INTO Points VALUES (?, ?)");
       for (let point of p5draw) {
-        await stmt.run(point.x, point.y);
+        await db.run("INSERT INTO Points (x, y) VALUES (?, ?)"
       }
-      stmt.finalize();
-
+    
       return await db.all("SELECT * from Points");
     } catch (dbError) {
       console.error(dbError);

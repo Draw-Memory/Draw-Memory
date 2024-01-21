@@ -196,17 +196,17 @@ fastify.post('/gravar', async(request, reply) => {
 });
 
 // Handle POST requests to /api
-fastify.get('/api', async (request, reply) => {
+fastify.get('/save', async (request, reply) => {
+  let params = request.query.raw ? {} : { seo: seo };
   const p5draw = request.body;
+  let ok = ok && await db.savePoints(p5draw);
 
-  // Insert each point into the database
-  const stmt = db.prepare("INSERT INTO points VALUES (?, ?)");
-  for (let point of p5draw) {
-    stmt.run(point.x, point.y);
-  }
-  stmt.finalize();
+  params.error = ok ? null : data.errorMessage;  
 
-  return { status: 'success' };
+  // Return the info to the client
+  return request.query.raw
+    ? reply.send(params)
+    : reply.view("/src/pages/index.hbs", params);
 });
 
 
