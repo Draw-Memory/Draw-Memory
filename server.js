@@ -199,7 +199,7 @@ fastify.post('/gravar', async(request, reply) => {
 fastify.get('/save', async (request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
   const p5draw = request.body;
-  let ok = ok && await db.savePoints(p5draw);
+  let ok = await db.savePoints(p5draw);
 
   params.error = ok ? null : data.errorMessage;  
 

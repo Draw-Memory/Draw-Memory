@@ -60,7 +60,7 @@ module.exports = {
     try {
       // Build the user data from the front-end and the current time into the sql query
       for (let point of p5draw) {
-        await db.run("INSERT INTO Points (x, y) VALUES (?, ?)"
+        await db.run("INSERT INTO Points (x, y) VALUES (?, ?)",[point.x,point.y]);
       }
     
       return await db.all("SELECT * from Points");
