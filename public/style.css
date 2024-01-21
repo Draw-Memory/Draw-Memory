@@ -68,6 +68,11 @@ body {
   background-color: var(--color-bg);
 }
 
+.p5Canvas {
+  max-height: var(--wrapper-height);
+  max-width: var(--wrapper-width);  
+}
+
 /* Page structure */
 .wrapper {
   max-height: var(--wrapper-height);
