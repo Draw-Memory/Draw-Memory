@@ -174,7 +174,7 @@ fastify.get("/gravar", async (request, reply) => {
   // We only send seo if the client is requesting the front-end ui
   let params = request.query.raw ? {} : { seo: seo };
   const p5draw = request.body;
-  let ok = await db.saveMemory(p5draw);
+  let ok = await db.savePoints(p5draw);
   params.error = ok ? null : data.errorMessage;  
 
   // Return the info to the client
@@ -186,7 +186,7 @@ fastify.get("/gravar", async (request, reply) => {
 fastify.post('/gravar', async(request, reply) => {
   let params = request.query.raw ? {} : { seo: seo };
   const p5draw = request.body;
-  let ok = await db.saveMemory(p5draw);
+  let ok = await db.savePoints(p5draw);
   params.error = ok ? null : data.errorMessage;  
 
   // Return the info to the client
