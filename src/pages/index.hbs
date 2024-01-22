@@ -172,23 +172,7 @@
       <a href="/logs">Admin</a>
     </div> 
 
-    <form method="post" action="/save">
-      <!-- The server script returns the list of language options to offer in the poll -->
-      {{#each optionNames}}
-      <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
-      <label for="{{this}}">{{this}}</label>
-      {{/each}}
-      <br /><br />
-      <button type="submit"> Submit </button>
-    </form>
-
-    <div id="gravarPontos">
-      <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
-    </div>
-
-
     <div id="canvasForDraw"></div>   
-
 
   </div>  
 
