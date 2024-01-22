@@ -49,9 +49,16 @@
       };
 
       async function uploadDrawing() {
-        document.getElementById('gravarPontos').innerHTML = points;
+        // When the mouse is pressed, send the variable value to Fastify
+        fetch('/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ value: points })
+        });
       }      
-      
+            
       function draw() {
         {{!-- background(200);     --}}
         
@@ -158,12 +165,27 @@
 
     <!-- Links -->
     <div class="links">
-      <a href="/gravar" id="gravarPontos">Memorizar"</a>
+      <a href="/gravar">Memorizar"</a>
       <span class="divider">|</span>
       <a href="/">Desenhar</a>
       <span class="divider">|</span>
       <a href="/logs">Admin</a>
     </div> 
+
+    <form method="post" action="/save">
+      <!-- The server script returns the list of language options to offer in the poll -->
+      {{#each optionNames}}
+      <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
+      <label for="{{this}}">{{this}}</label>
+      {{/each}}
+      <br /><br />
+      <button type="submit"> Submit </button>
+    </form>
+
+    <div id="gravarPontos">
+      <input type="radio" id="{{this}}" name="language" value="{{this}}" required />
+    </div>
+
 
     <div id="canvasForDraw"></div>   
 
